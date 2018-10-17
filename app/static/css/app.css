@@ -1,0 +1,268 @@
+@font-face {
+font-family: "Beaufort";
+src: url("/static/fonts/beaufortforlol-regular.otf");
+}
+
+@font-face {
+font-family: "Beaufort Medium";
+src: url("/static/fonts/BeaufortforLPL-Medium.otf");
+}
+
+@font-face {
+font-family: "Beaufort Bold";
+src: url("/static/fonts/beaufortforlol-bold.otf");
+}
+
+body {
+    background-color: #0a1827;
+    color: #c4b96f;
+    font-family: "Beaufort";
+}
+
+.bg{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-image: url('/static/resources/bg.jpg');
+    height: 100vh;
+    width: 100vw;
+    opacity: 0.2;
+    z-index: -10;
+}
+
+button, input[type="submit"]{
+    background: transparent;
+    border: 1px solid #937138;
+    border-radius: 6px;
+    margin: 5px;
+}
+
+button:hover ,input[type="submit"]:hover{
+    border-width: 2px;
+    font-weight: bold;
+}
+
+input[type='text']{
+    margin-left: 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #937138;
+}
+
+input[type='number']{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #937138;
+    width: 3vw;
+    position: relative;
+    display: inline;
+}
+
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #937138;
+    background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 100%;
+    width: 5vw;
+    position: relative;
+    display: inline;
+}
+
+option{
+    background-color: #0a1827;
+}
+
+#deck{
+    position: relative;
+    top: -2.5vh;
+    left: 2vw;
+    opacity: 0;
+    z-index: 3
+}
+
+#connect-container{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 30vw;
+    height: 20vh;
+    background-color: #0a1827;
+    border-radius: 10px;
+    opacity: 0.7;
+    box-shadow: -2px 2px 2px #000000A3;
+}
+
+#connect-container>.containter{
+    margin: auto;
+    width: 60%;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #937138;
+}
+
+#connect-container h3{
+    font-family: "Beaufort Bold";
+    text-align: center;
+    border-bottom: 1px solid #937138;
+    padding: 5px;
+}
+
+#connect-container button{
+    display: block;
+    margin: 0 auto;
+    width: 40%;
+}
+
+.preview{
+    width: 17vw;
+    padding-bottom: 5px;
+    border-radius: 15px;
+}
+
+
+#preview-container{
+    position: absolute;
+    width: 18vw;
+    font-size: 0;
+    white-space: pre-line;
+    background: #0a182770;
+    padding: 5px;
+    border-radius: 10px;
+    border-right: 1px solid #937138;
+}
+
+#card-title > h2{
+    padding: 0px 0px 5px 0px;
+    margin: 0px;
+    font-weight: bold;
+    font-size: 25pt;
+    font-family: "Beaufort Bold"
+}
+
+#info{
+    position: relative;
+    height: 51vh;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#card-text {
+    font-size: 12pt;
+    text-align: justify;
+    text-justify: inter-word;
+    padding-right: 13px;
+}
+
+#champion-preview p{
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+    font-size: 10pt;
+}
+
+#epithet{
+    font-size: 13pt;
+    font-weight: bold;
+}
+
+#item-preview > p{
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+    font-size: 10pt;
+}
+
+#spell-preview > p{
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+    font-size: 10pt;
+}
+
+#monster-preview > p{
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 10px;
+    font-size: 10pt;
+}
+
+.details{
+    width: 6vw;
+    border-radius: 9px;
+    position: absolute;
+    top: 0vh;
+    left: 19vw;
+    z-index: 10;
+}
+
+.details p{
+    margin: 0px;
+    display:block;
+    width: 4.5vw;
+}
+
+.details button{
+    width: 22px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    margin: 0px 2px;
+}
+
+.special-stats{
+    display: flex;
+    position: relative;
+    width: 10vw;
+}
+
+.details .controls{
+    left: 5vw;
+    width: 3vw;
+    display: flex;
+}
+
+#marks{
+    position: relative;
+    width: 10vw;
+}
+
+#mark, #stack{
+    display: block;
+    width: 6vw;
+    margin: 0vh;
+}
+
+#stacks{
+    position: relative;
+    width: 10vw;
+}
+
+#stack-num{
+    position: absolute;
+    top: 2.9vh;
+    left: 6.2vw;
+}
+
+#marks .controls, #stacks .controls{
+    position: absolute; 
+    top: 5.4vh;
+    left: 6vw;
+}
+
+#marks input[type='number'], #stacks input[type='number']{
+    width: 2vw;    
+}
+
+#marks select, #stacks select{
+    width: 3vw;    
+}
+
+h5{
+    font-family: "Beaufort Bold";
+    font-size: 1.2em;
+}

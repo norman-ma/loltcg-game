@@ -1,0 +1,1087 @@
+body{
+    overflow: hidden;
+}
+
+#game-area p,
+#game-area label,
+#game-area .stats{
+    cursor: pointer;
+}
+
+#player{
+    position: absolute;
+    left: 86vw;
+    top: 79vh;
+    padding: 5px;
+    border: 1px solid #937138;
+    border-radius: 10px;
+    background: #0a1827AA;
+    width: 10vw;
+    height: 10vw;
+}
+
+#enemy{
+    position: absolute;
+    left: 86vw;
+    top: 2vh;
+    padding: 10px;
+    border: 1px solid #937138;
+    border-radius: 10px;
+    background: #0a1827AA;
+    width: 10vw;
+    height: 10vw;
+}
+
+#enemy img, #player img{
+    height: 3vw;
+    display: block;
+    margin: auto;
+}
+
+#player button{
+    width: 1vw;
+    height: 1vw;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    font-size: .6em;
+}
+
+#player div{
+    position: relative;
+}
+
+#player .controls{
+    position: absolute;
+    top: -.5vh;
+    width: 4vw;
+    display: flex;
+    left: 4vw
+}
+
+.player-name{
+    font-family: "Beaufort Bold";
+    font-size: 12pt;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #937138;
+    text-align: center;
+}
+
+#next-button{
+    position: absolute;
+    left: 93.5vw;
+    top: 36vh;
+    font-size: 20pt
+}
+
+#field-area{
+  perspective: 2000px;
+}
+
+#field,
+#enemy-field,
+#neutral{
+    transform:  rotateX(70deg)
+                translateZ(-170px)
+                translateX(-2vw);
+}
+
+
+.enemy .stats{
+    top: 0px;
+    text-align: left;
+}
+
+#announcements{    
+    perspective: 2000px;
+}
+
+#announcements div{
+    position: absolute;
+    left: 52vw;
+    top: 36vh;
+    width: 8vw;
+    height: 8vw;
+    font-family: "Beaufort Bold";
+    text-align: center;
+    font-size: 12pt;
+}
+
+.field-zones{
+    position: absolute;
+    width: 8vw;
+    height: 8vw;
+    border: 1px solid #937138;
+    border-radius: 10px;
+    background: #0a1827AA; 
+}
+
+.card-zones{
+    position: absolute;
+    width: calc(0.74 * 8vw);
+    height: 8vw;
+    border: 1px solid #937138;
+    border-radius: 10px;
+    background: #0a1827AA;
+}
+
+#search{
+    position: absolute;
+    width: 14vw;
+    z-index: 10;
+    left: 85vw;
+    border: 1px solid #937138;
+    border-radius: 10px;
+    background: #0a1827AA;
+}
+
+#search .card{
+    position: relative;
+    margin: .5vw .5vw;
+}
+
+#search .card img{
+    width: 12vw;
+}
+
+#search-panel{
+    height: 95vh;
+    overflow-y: auto;
+}
+
+#a1 {
+    left: 45vw;
+    top: 55vh;
+}
+#a2 {
+    left: 53vw;
+    top: 55vh;
+}
+#a3 {
+    left: 61vw;
+    top: 55vh;
+}
+#a4 {
+    left: 45vw;
+    top: 71vh;
+}
+#a5 {
+    left: 53vw;
+    top: 71vh;
+}
+#a6 {
+     left: 61vw;
+    top: 71vh;
+}
+#a7 {
+    left: 37vw;
+    top: 64vh;
+}
+#a8 {
+    left: 69vw;
+    top: 64vh;
+}
+#a9{
+    left: 30.5vw;
+    top: 64vh;
+}
+#deck-zone{
+    left: 77.5vw;
+    top: 70.6vh;
+}
+
+#ftn {
+    left: 77.5vw;
+    top: 54vh;
+}
+#banished {
+    left: 77.5vw;
+    top: 37.4vh;
+}
+
+#baron{
+    left: 46vw;
+    top: 38vh;
+}
+
+#drag{
+    left: 62vw;
+    top: 38vh;
+}
+
+#e1 {
+    left: 61vw;
+    top: 21vh;
+}
+#e2 {
+    left: 53vw;
+    top: 21vh;
+}
+#e3 {
+    left: 45vw;
+    top: 21vh;
+}
+#e4 {
+    left: 61vw;
+    top: 5vh;
+}
+#e5 {
+    left: 53vw;
+    top: 5vh;
+}
+#e6 {
+     left: 45vw;
+    top: 5vh;
+}
+#e7 {
+    left: 69vw;
+    top: 15vh;
+}
+#e8 {
+    left: 37vw;
+    top: 15vh;
+}
+#e9{
+    left: 77.5vw;
+    top: 15vh;
+}
+#enemy-deck{
+    left: 30.5vw;
+    top: 7.2vh;
+}
+
+#enemy-ftn{
+    left: 30.5vw;
+    top: 23.5vh;
+}
+
+#enemy-banished{
+    left: 30.5vw;
+    top: 40vh;
+}
+
+#hand{
+    position: absolute;
+    width: 60vw;
+    height: 20vh;
+    top: 80vh;
+    left: 20vw;
+    border-top: 1px solid #937138;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+#hand .card{
+    width: 5vw;
+}
+
+#hand .card{
+    position: relative;
+    width: 5vw;
+    box-shadow: -5px 2px 2px #00000060;
+    margin: 5px;
+    z-index: 0;
+}
+
+#hand .card:hover{
+    width: 5.3vw;
+    box-shadow: -5px 2px 2px #00000060;
+    margin: 0px;
+    z-index: 2;
+}
+
+#enemy-hand{
+    position: absolute;
+    width: 50vw;
+    height: 15vh;
+    top: 0px;
+    left: 30vw;
+    border-bottom: 1px solid #937138;
+    display: flex;
+    justify-content: center;
+    z-index: -10;
+}
+
+#enemy-hand .card{
+    position: relative;
+    box-shadow: -5px 2px 2px #00000060;
+    top: 0.5vh;
+    width: 5vw;
+}
+
+#enemy-hand .card,
+#enemy-hand img{
+    height: 14vh;
+}
+
+.card img{
+    border-radius: 5px;
+}
+
+.hand .card, .hand img{
+    height: 18vh;
+}
+
+.card-zones .card{
+    height: 8vw;
+}
+
+.field-zones .card{
+    position: absolute;
+    height: 8vw;
+    width: calc(0.74 * 8vw);
+    margin: 0 1vw;
+    box-shadow: -5px 2px 2px #00000060;
+    z-index: 6;
+}
+
+#enemy-field .field-zones .card{
+    box-shadow: 5px 2px 2px #00000060;
+}
+
+#enemy-field .field-zones .card:hover img{
+    box-shadow: 3px 2px 4px #93713880;
+}
+
+.field-zones img{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+}
+
+.card .card{
+    margin: 0px;
+}
+
+.card-zones img{
+    height: 7.5vw;
+}
+
+.card-zones .card{
+    position: relative;
+    left: .15vw;
+    top: 0.3vh;
+    box-shadow: -5px 2px 2px #00000060;
+}
+
+.field-zones .card:hover img,
+.card-zones .card:hover img{
+     box-shadow: -3px 2px 4px #93713880;
+}
+
+.deck img{
+    border-radius:5px;
+}
+
+#search img{
+    border-radius: 9px;
+}
+
+#enemy-banished .card,
+#enemy-ftn .card{
+    top: -0.5vh;
+}
+
+#deck-zone img,
+#ftn img,
+#banished img{
+    position: relative;
+    left: 0.2vw;
+    top: -0.1vh;
+    box-shadow: -3px 5px #000000
+}
+
+.card-zones label{
+    display: block;
+    position: absolute;
+    font-size: 3em;
+    top: 4vh;
+    opacity: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.field-zones label{
+    display: block;
+    position: absolute;
+    font-size: 3em;
+    top: 4vh;
+    width: 100%;
+    text-align: center;
+    z-index: -1;
+}
+
+.searchable:hover img{
+    opacity: 0.5;
+}
+
+.card-zones:hover label{
+    opacity: 1;
+}
+
+.enemy img{
+    position: relative;
+    left: -0.2vw;
+    top: -0.4vh;
+    box-shadow: -5px -5px #000000;
+    transform: rotate(180deg);
+}
+
+#ftn .card,
+#banished .card,
+#enemy-ftn .card,
+#enemy-banished .card{
+    position: absolute;
+}
+
+#ftn img:hover,
+#banished img:hover,
+#enemy-ftn img:hover,
+#enemy-banished img:hover{
+    border: none;
+}
+
+.target{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+}
+
+.target:hover{
+    border: 2px solid #937138;
+    border-radius: 10px;
+}
+
+.target:hover ~label{
+    opacity: 2;
+}
+
+.searching{
+    font-family: "Beaufort Bold";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 4;
+    font-size: 1.4em;
+    background: #0a182770;
+}
+
+.searchable p{
+    position: relative;
+    top: 2vw;
+}
+
+#reveal{
+    position: absolute;
+    z-index: 50;
+    top: 30vh;
+    width: 82vw;
+    left: 18vw;
+}
+
+#reveal-panel{
+
+    display: flex;
+    justify-content: center;
+}
+
+#reveal .card img{
+    height: 30vh;
+    box-shadow: -5px 2px 10px #00000060;
+    border-radius: 8px;
+}
+
+#reveal button{
+    display: block;
+    position: relative;
+    margin: 10px auto;
+}
+
+.equipped-0{
+    position: relative;
+    top: 0vh;
+    left: .3vw;
+    z-index: 5 !important;
+}
+
+.equipped-1{
+    position: relative;
+    top: 0vh;
+    left: .6vw;
+    z-index: 4 !important;
+}
+
+.equipped-2{
+    position: relative;
+    top: 0vh;
+    left: .9vw;
+    z-index: 3 !important;
+}
+
+.equipped-3{
+    position: relative;
+    top: 0vh;
+    left: 1.2vw;
+    z-index: 2 !important;
+}
+
+#hand .menu{
+    position: absolute;
+    top: -13.2vh;
+    background: #0a1827;
+}
+
+#hand .menu button{
+    position: relative;
+    width: calc(0.74 * 8.5vw);
+}
+
+.menu button:hover{
+     font-weight: normal;
+}
+
+.field-zones .menu{
+    position: absolute;
+    top: 0px;
+    left: calc(-0.74 * 7.5vw);
+    width: calc(0.74 * 7.5vw);
+    background: #0a1827;
+}
+
+#a4 .menu,
+#a5 .menu,
+#a6 .menu{
+    top: -10vh;
+}
+
+.field-zones button{
+    width: calc(0.74 * 7.5vw);
+    font-size: .8em;
+    margin: .3vh 0px;
+}
+
+#search .menu{
+    position: absolute;
+    top: 0;
+    opacity: 0;
+}
+
+#search .menu:hover{
+    opacity: 1;
+}
+
+#search .menu button{
+    width: calc(0.74 * 16vw);
+    background: #0a1827CC;
+    margin: 1px 0px;
+    font-size: 1em;
+}
+
+.menu{
+    z-index: 10
+}
+
+.deck .menu{
+    position: absolute;
+    top: -4.5vw;
+    background: #0a1827CC;
+}
+
+.deck .menu button{
+    margin: 1px;
+}
+
+.card-zones button{
+    width: calc(0.74 * 7.5vw);
+    font-size: .8em;
+}
+
+#a9 .menu{
+    position: absolute;
+    top: 0vw;
+    left: calc(0.74 * 7.5vw);
+    background: #0a1827CC;
+}
+
+#ally-structures{
+    position: absolute;
+    height: 2vw;
+    width: 38vw;
+    left: 39vw;
+    top: 77vh;
+    z-index: 10;
+}
+
+.structure img{
+    height: 9vh;
+}
+
+#ally-structure-0{
+    position: absolute;
+    top: -6vh;
+    width: 12.5vw;
+    display: flex;
+    justify-content: center;
+}
+
+#ally-structure-1{
+    position: absolute;
+    top: -6vh;
+    width: 12.5vw;
+    left: 12.5vw;
+    display: flex;
+    justify-content: center;
+}
+
+#ally-structure-2{
+    position: absolute;
+    top: -6vh;
+    width: 12.5vw;
+    left: 25vw;
+    display: flex;
+    justify-content: center;
+}
+
+.structure .hp{
+    position: absolute;
+    width: 4vw;
+    height: .7vh;
+    display: flex;
+    z-index: 11;
+}
+
+.hp div{
+    width: 1vw;
+    height: .7vh;
+    border: 1px solid black;
+}
+
+.enemy.structure img{
+    box-shadow: none;
+}
+
+.ally .hp{
+    top: 8vh;
+}
+
+.ally .hp div{
+    background: #6ca5d2;
+}
+
+.enemy .hp{
+    justify-content: right;
+}
+
+.enemy .hp div{
+    background: #d62425;
+}
+
+#enemy-structures{
+    position: absolute;
+    height: 1.5vw;
+    width: 24vw;
+    left: 43vw;
+    top: 15vh;
+    z-index: 10;
+    transform: rotate(180deg);
+}
+
+#enemy-structure-0{
+    position: absolute;
+    width: 8vw;
+    display: flex;
+    justify-content: center;
+}
+
+#enemy-structure-1{
+    position: absolute;
+    width: 8vw;
+    left: 8vw;
+    display: flex;
+    justify-content: center;
+}
+
+#enemy-structure-2{
+    position: absolute;
+    width: 8vw;
+    left: 16vw;
+    display: flex;
+    justify-content: center;
+}
+
+.zone-details{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: #0a182710;
+}
+
+.zone-details:hover{
+    border: 1.5px solid #937138;
+    border-radius: 10px;
+}
+
+.cd{
+    display: flex;
+    position: absolute;
+    z-index: 10;
+    border-radius: 50%;
+    width:1.5vw !important;
+    height: 1.5vw;
+    background: #0a1827CC;
+    justify-content: center;
+    left: 4.3vw;
+}
+
+.popup{
+    left: 48vw;
+    top: 25vh;
+    position: absolute;
+    z-index: 20;
+    background: #0a1827CC;
+    width: 10vw;
+    padding: 2vw 2vw;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#add-cd button{
+    height: 2vh;
+    width: 3vw;
+}
+
+#cd-type{
+    width: 4vw;
+    display: inline;
+}
+
+.cooldowns{
+    position: absolute;
+    z-index: 20;
+    width: 100%;
+    height: 1.5vw;
+    top: 3vw;
+    display: flex;
+}
+
+.cooldown{
+    display: flex;
+    position: relative;
+    z-index: 10;
+    border-radius: 50%;
+    width:1.5vw !important;
+    height: 1.5vw;
+    background: #0a182790;
+    justify-content: center;
+    padding: .3vh;
+    border: 1px solid #937138;
+}
+
+.cooldown:hover {
+    border: 2px solid #937138;
+}
+
+.cooldown .menu{
+    top: -1.5vw;
+}
+
+#field-bg{
+    position: absolute;
+    left: 0px;
+    transform: rotateX(70deg);
+    width: 80%;
+    left: 15.5vw;
+    display: flex;
+    justify-content: center;
+}
+
+#field-bg img{
+    height: 51vh;
+    opacity: .5;
+    box-shadow: none;
+}
+
+#field-bg .ally{
+    position: absolute;
+    top: 51.6vh;
+}
+
+#field-bg .enemy{
+    position: relative;
+    top: 1vh;
+}
+
+.disable img{
+    transform: rotate(-90deg); 
+}
+
+.untargetable{
+    background-color: #FFD700;
+}
+
+.untargetable .stats{
+    color: #0a1827
+}
+
+.untargetable img{
+    opacity: .5;
+}
+
+.knockup img{
+    transform: rotate(-90deg) translateX(1vw);
+    height: 8.5vw;
+    box-shadow: -15px 2px 2px #00000060;
+    z-index: 30;
+}
+
+.knockup .cd,
+.knockup .cooldowns,
+.knockup .menu,
+.knockup .stats{
+    z-index: 31;
+}
+
+.slow{
+    background-color: #58BAD7;
+}
+
+.slow img{
+    opacity: .7;
+}
+
+.slow .stats{
+    color: #FFFFFF;
+}
+
+.status{
+    width: calc(0.74 * 8vw);
+    left: 0px;
+    text-align: center;
+    position: absolute;
+    z-index: 31;
+    text-shadow:
+   -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000;
+    opacity: .7;
+    font-size: .7em;
+}
+
+.stats{
+    position: absolute;
+    z-index: 20;
+    top: 5.5vw;
+    font-size: 2em;
+    font-family: "Beaufort Bold";
+    width: calc(0.74 * 8vw);
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.stats .menu{
+    display: none;
+    font-size: .5em;
+}
+
+.stats:hover .menu{
+    display: block;
+}
+
+.stats .controls{
+    display: none;
+    font-size: .4em;
+    position: relative;
+    top: -3.6vw;
+    width: 1.1vw;
+    height: 2vw;;
+    border: none;
+}
+
+.stats .controls button{
+    width: 1vw;
+    height: 1vw;
+    border-radius:50%;
+    display: flex;
+    justify-content: center;
+    background-color: #0a182790;
+    margin-bottom: 2vh; 
+}
+
+.stats .hp p,
+.stats .ad p, 
+.stats .ap p{
+    white-space: nowrap;
+}
+
+.stats .hp:hover .controls, 
+.stats .ad:hover .controls, 
+.stats .ap:hover .controls{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    margin-bottom: 2vh; 
+}
+
+.cancel{
+    height: 1.5vw;
+    width: 1.5vw;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.shield{
+    color: #A0A0A0
+}
+
+.icons{
+    position: absolute;
+    top: -1vh;
+    display: flex;
+    width: 100%;
+    height: 1.5vw;
+    justify-content: left;
+}
+
+.icons .marks, .icons .stacks{
+    position: relative;
+    display: flex;
+    z-index: 1;
+}
+
+.stacks label{
+    opacity: 1;
+    position: absolute;
+    top: -1vw;
+    z-index: 7;
+    font-size: 2em;
+    color: white
+}
+
+.icons .marks img,.icons .stacks img {
+    height: 1.5vw;    
+}
+
+.card .icons{
+    top: 0px;
+    left: 5.5vw;
+    z-index: 6;
+    width: 1.5vw;
+    flex-direction: column;
+}
+
+.card .icons .marks, .card .icons .stacks{
+    flex-direction: column;
+}
+
+.icons .stacks > div{
+    position: relative;
+}
+
+.stack-list, .mark-list{
+    position: relative;
+}
+
+.stack-list .controls, .mark-list .controls{
+    top: 0px !important;
+}
+
+#random-area{
+    position: absolute;
+    top: 33vh;
+    left: 32vw;
+    width: 9vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#random-area h1{
+    width: 100%;
+    text-align: center;    
+}
+
+#random-area .controls{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#tokens{
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    width: 8vw;
+    left: 72vw;
+    top: 36vh;
+    z-index: 100;
+}
+
+#tokens input[type="text"]{
+    width: 5vw
+}
+
+.token{
+    width: 3vw;
+    height: 3vw;
+    position: relative;
+}
+
+.token img{
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+}
+
+.token .stats{
+    position: absolute;
+    top: 0vw;
+    left: 0;
+    width: 3vw;
+}
+
+.token .menu{
+    display: none;
+}
+
+.token:hover .menu{
+    display: block;
+}
+
+.token .status{
+    width: 100%;
+}
+
+.token.untargetable, .token.slow{
+    border-radius: 50%;
+}
+
+.token.untargetable .stats{
+    color: white;
+}
+
+#buffs{
+    position: absolute;
+    top: 75vh;
+    left: 20vw
+}
+
+#enemy-buffs{
+    position: absolute;
+    top: 15vh;
+    left: 68vw;
+}
+
+#enemy-buffs img{
+    height: 4vh;
+}

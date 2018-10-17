@@ -1,0 +1,10 @@
+<div ng-controller="ConnectController" id="connect-container">
+    <div class="containter">
+        <h3>Connect to a Game</h3>
+        <form enctype="multipart/form-data" name="connect-form" id="connect-form" method="post" ng-submit="connect()">
+            <label>Name</label><input type="text" id="username" ng-model="data.name"/><br>
+            <label>Deck</label><input type="text" id="deck-name" placeholder="Browse..." readonly="readonly"/><input type="file" id="deck" accept=".dek"/>
+            <button>Connect</button>
+        </form>
+    </div>
+</div>

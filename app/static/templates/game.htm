@@ -1,0 +1,584 @@
+<!--suppress XmlDuplicatedId -->
+<div id="game-area" ng-controller="StateController">
+    <div id="reveal" ng-if="revealing">
+        <div id="reveal-panel">
+            <div ng-repeat="card in reveal">
+                <div class="card" id="{{ card.gid }}" ng-mouseover="onHover(card.id)">
+                        <img ng-src="{{ card.img }}"/>
+                </div>
+            </div>
+        </div>
+        <button ng-click="doneView()" ng-if="duration > 0">Done</button>
+    </div>
+    <div class="details" ng-if="showDetails">
+        <div ng-if="details.stats != null">
+            <h5>Special Stats</h5>
+            <div ng-repeat="(key, value) in details.stats" class="special-stats">
+                <p>{{key}}: {{value.val}}</p>
+                <div class="controls" ng-if="controls">
+                    <button ng-if="value.val < value.max" ng-click="changeSpecial(details.gid, key, 1)">+</button><button ng-if="value.val > 0" ng-click="changeSpecial(details.gid, key, -1)">-</button>
+                </div>
+            </div>
+        </div>
+        <div id="marks" ng-if="details.marks != null">
+            <h5 ng-if="details.marks.length !== 0 || controls">Marks</h5>
+            <input type="text"  placeholder="Add Mark" id="mark" list="mark-list" ng-model="mark.mark" ng-if="controls">
+            <datalist id="mark-list">
+                <select>
+                    <option ng-repeat="m in marks" value="{{ m }}"></option>
+                </select>
+            </datalist>
+            <input type='number' id="duration-val" ng-model="mark.duration.val" min="0" ng-if="controls">
+            <select ng-model="mark.duration.type" ng-if="controls">
+                <option value="turn">turn</option>
+                <option value="phase">phase</option>
+            </select>
+            <div class="controls" ng-if="controls">
+                <button ng-click="markTarget(details.gid)">+</button>
+            </div>
+            <div ng-repeat="mark in details.marks" class="mark-list">
+                <p>{{ mark }}</p>
+                <div class="controls" ng-if="controls">
+                    <button ng-click="unmarkTarget(details.gid, mark)">x</button>
+                </div>
+            </div>
+        </div>
+        <div id="stacks" ng-if="details.stacks != null">
+            <h5 ng-if="!isEmpty(details.stacks) || controls">Stacks</h5>
+            <input type="text"  placeholder="Add Stack" id="stack" list="stack-list" ng-model="stack.stack" ng-if="controls">
+            <datalist id="stack-list">
+                <select>
+                    <option ng-repeat="s in stacks" value="{{ s }}"></option>
+                </select>
+            </datalist>
+            <input type='number' id="stack-num" ng-model="stack.num" min="0" ng-if="controls">
+            <input type='number' id="duration-val" ng-model="stack.duration.val" min="0" ng-if="controls">
+            <select ng-model="stack.duration.type" ng-if="controls">
+                <option value="turn">turn</option>
+                <option value="phase">phase</option>
+            </select>
+            <div class="controls" ng-if="controls">
+                <button ng-click="addStack(details.gid)">+</button>
+            </div>
+            <div ng-repeat="(key, value) in details.stacks" class="stack-list">
+                <p>{{ value }} {{ key }}</p>
+                <div class="controls" ng-if="controls">
+                    <button ng-click="addStack(details.gid, key, 1)">+</button>
+                    <button ng-click="removeStack(details.gid, key)">x</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="add-cd" ng-if="cooldown.gid !== null" class="popup">
+        <div>
+            Duration: <input type="number" id="cd-duration" ng-model="cooldown.duration">
+            Cost: <input type="number" id="cd-cost" ng-model="cooldown.cost">
+            Type: <select id="cd-type" ng-model="cooldown.type">
+                <option value="ability">Ability</option>
+                <option value="item">Item</option>
+            </select>
+            Effect: <select id="cd-type" ng-model="cooldown.effect">
+                <option value=""></option>
+                <option value="damage">Damage</option>
+                <option value="heal">Heal</option>
+                <option value="shield">Shield</option>
+            </select>
+        </div>
+        <button ng-click="addCooldown()">Add</button>
+    </div>
+    <div id="heal" ng-if="toHeal.gid !== null" class="popup">
+        value: <input type="number" ng-model="toHeal.val" min="0">
+        <button ng-click="heal(zone.card.gid)">Heal</button><button ng-click="toHeal.gid = null" class="cancel">x</button>
+    </div>
+    <div id="shield" ng-if="toShield.gid !== null" class="popup">
+        value: <input type="number" ng-model="toShield.val" min="0">
+        duration: <input type="number" ng-model="toShield.duration" min="0">
+        <button ng-click="shield()">Shield</button><button ng-click="toShield.gid = null" class="cancel">x</button>
+    </div>
+    <div id="effect" ng-if="healTarget.gid !== null || shieldTarget.gid !== null || damageTarget.gid !== null" class="popup">
+        <div class="effect damage" ng-if="damageTarget.gid !== null">
+            value: <input type="number" ng-model="damageTarget.val" min="0">
+            true damage: <input type="checkbox" ng-model="damageTarget.isTrue">
+            <button ng-click="damageTarget.gid = null" class="cancel">x</button>
+        </div>
+        <div class="effect heal" ng-if="healTarget.gid !== null">
+            value: <input type="number" ng-model="healTarget.val" min="0">
+            <button ng-click="healTarget.gid = null" class="cancel">x</button>
+        </div>
+        <div class="effect shield" ng-if="shieldTarget.gid !== null">
+            value: <input type="number" ng-model="shieldTarget.val" min="0">
+            duration: <input type="number" ng-model="shieldTarget.duration" min="0">
+            <button ng-click="shieldTarget.gid = null" class="cancel">x</button>
+        </div>
+
+        <button ng-click="applyEffect()" ng-if="healTarget.targets.length > 0 || shieldTarget.targets.length > 0 || damageTarget.targets.length > 0">Apply</button>
+    </div>
+
+    <div id="buffs">
+        <img ng-repeat="buff in state.buffs" ng-src="/static/resources/buffs/{{buff}}.png">
+    </div>
+
+    <div id="enemy-buffs">
+        <img ng-repeat="buff in state.enemyBuffs" ng-src="/static/resources/buffs/{{buff}}.png">
+    </div>
+
+    <div id="random-area">
+        <h1 id="result">{{ result }}</h1>
+        <div class="controls">
+            <button ng-click="flipCoin()">Flip Coin</button>
+            <button ng-click="rollDie()">Roll Die</button>
+        </div>
+    </div>
+
+    <div id="tokens">
+        Token
+        <select id="token-name" ng-model="token.name">
+            <option value=""></option>
+            <option ng-repeat="t in tokens" value="{{ t }}">{{ t }}</option>
+        </select>
+        HP<input type="number" ng-model="token.stats[0]">
+        AD<input type="number" ng-model="token.stats[1]">
+    </div>
+
+    <div id="search" ng-if="doSearch">
+        <div id="search-panel">
+            <div ng-repeat="card in searchData.cards">
+                <div class="card" id="{{ card.gid }}" ng-mouseover="onHover(card.id)">
+                    <img ng-src="{{ card.img }}"/>
+                    <div class="menu">
+                        <button ng-if="card.ctype === 'PET' || card.ctype === 'CHAMPION'" ng-click="summon(card.gid,searchData.name)">Summon</button>
+                        <button ng-click="to(card.gid,{position:searchData.name, side:null},{position:'hand',side:null})">Send to Hand</button>
+                        <button ng-if="searchData.name !== 'fountain'" ng-click="to(card.gid,{position:searchData.name, side:null},{position:'fountain',side:null})">Send to Fountain</button>
+                        <button ng-if="searchData.name !== 'banished'" ng-click="to(card.gid,{position:searchData.name, side:null},{position:'banished',side:null})">Banish</button>
+                        <button ng-if="searchData.name !== 'deck'" ng-click="to(card.gid,{position:searchData.name, side:null},{position:'deck',side:null})">Shuffle into Deck</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button ng-click="doneSearch()">Done</button>
+    </div>
+    <div id="player">
+        <img src="/static/resources/Summoner_Worlds_icon.png">
+        <p class="player-name" >{{ state.player.name }}</p>
+        <div id="player-level">
+            <p>Level: {{ state.level }}</p>
+            <div class="controls">
+                <button ng-click="levelUp()">^</button>
+            </div>
+        </div>
+        <div id="player-mana">
+            <p>Mana: {{ state.mana.currentMana }}/{{ state.mana.totalMana }}</p>
+            <div class="controls">
+                <button ng-click="restoreMana(1)">+</button>
+                <button ng-click="restoreMana(-1)">-</button>
+            </div>
+        </div>
+    </div>
+    <div id="hand" class="hand">
+        <div ng-repeat="card in state.hand track by $index">
+            <div class="card" id="{{ card.gid }}" ng-mouseover="onHover(card.id)">
+                <img ng-src="{{ card.img }}" ng-click="setMenu('hand'+$index)"/>
+                <div class="menu" ng-if="menu === 'hand'+$index">
+                    <button ng-if="card.ctype === 'PET' || card.ctype === 'CHAMPION'" ng-click="summon(card.gid,'hand')">Summon</button>
+                    <button ng-if="card.ctype === 'SUMMONERSPELL' && card.spellType !== 'EQUIPPABLE'" ng-click="activate(card.gid)">Activate</button>
+                    <button ng-if="card.ctype === 'ITEM' || (card.ctype === 'SUMMONERSPELL' && card.spellType === 'EQUIPPABLE')" ng-click="toEquip.gid = card.gid">Equip</button>
+                    <button ng-if="searchData.name !== 'fountain'" ng-click="to(card.gid,{position:'hand',side:null},{position:'fountain',side:null})">Discard</button>
+                    <button ng-if="searchData.name !== 'banished'" ng-click="to(card.gid,{position:'hand',side:null},{position:'banished',side:null})">Banish</button>
+                    <button ng-if="searchData.name !== 'deck'" ng-click="to(card.gid,{position:'hand',side:null},{position:'deck',side:null})">Shuffle into Deck</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="announcements">
+        <div>
+             <p ng-if="state.game.turnPlayer !== state.player.name">{{ state.game.turnPlayer }}'s Turn {{ state.game.turn }}</p>
+            <p ng-if="state.game.turnPlayer === state.player.name">Your Turn {{ state.game.turn }}</p>
+             <p>{{ state.game.phase }}</p>
+        </div>
+    </div>
+
+    <div id="field-area">
+        <div id="field-bg">
+            <div class="ally">
+                <img src="{{ fieldbg }}">
+            </div>
+            <div class="enemy">
+                <img src="{{ enemyfieldbg }}">
+            </div>
+        </div>
+        <div id="field">
+            <div id="deck-zone" class="card-zones deck searchable" ng-click="setMenu('deck')">
+                <img src="/static/resources/cardback.jpg"/>
+                <div class="menu" ng-if="menu === 'deck'">
+                    <button ng-click="draw()">Draw</button>
+                    <button ng-click="to('t',{position:'deck',side:null},{position:'fountain',side:null})">Mill</button>
+                    <button ng-click="to('t',{position:'deck',side:null},{position:'banished',side:null})">Banish</button>
+                    <button ng-click="search('deck')">Search</button>
+                </div>
+                <label>{{ state.deck }}</label>
+            </div>
+            <div id="ftn" class="card-zones searchable" ng-click="search('fountain')">
+                <div ng-repeat="card in state.fountain">
+                    <div class="searching" ng-if="searching === 'fountain'"><p><p>Searching...</p></p></div>
+                    <div class="card" id="{{ card.gid }}" ng-mouseover="onHover(card.id)">
+                        <img ng-src="{{ card.img }}"/>
+                    </div>
+                </div>
+                <label>{{ state.fountain.length }}</label>
+            </div>
+            <div id="banished" class="card-zones searchable" ng-click="search('banished')">
+                <div class="searching" ng-if="searching === 'banished'"><p>Searching...</p></div>
+                <div ng-repeat="card in state.banished">
+                    <div class="card" id="{{ card.gid }}" ng-mouseover="onHover(card.id)">
+                        <img ng-src="{{ card.img }}"/>
+                    </div>
+                </div>
+                <label>{{ state.banished.length }}</label>
+            </div>
+            <div ng-repeat="zone in state.field track by $index" id="a{{ $index+1 }}" ng-class="class($index)">
+                <div class="card {{ zone.card.currentState.toLowerCase() }}" id="{{ zone.card.gid }}" ng-if="zone.card !== null">
+                    <div class="stats" ng-if="$index !== 8" >
+                        <div class="hp">
+                            <p>{{ zone.card.hp }}<span ng-if="zone.card.shield > 0" class="shield">({{ zone.card.shield }})</span>|</p>
+                            <div class="controls">
+                                <button ng-click="changeStat(zone.card.gid,'hp',1)">^</button>
+                                <button ng-click="changeStat(zone.card.gid,'hp',-1)">⌄</button>
+                                <button ng-click="damage(zone.card.gid,1)" class="damage">-</button>
+                            </div>
+                        </div>
+                        <div class="ad">
+                            <p>{{ zone.card.ad }}</p>
+                            <div class="controls">
+                                <button ng-click="changeStat(zone.card.gid,'ad',1)">^</button>
+                                <button ng-click="changeStat(zone.card.gid,'ad',-1)">⌄</button>
+                            </div>
+                        </div>
+                        <div class="ap" ng-if="zone.card.ctype === 'CHAMPION'">
+                            <p>|{{ zone.card.ap }}</p>
+                            <div class="controls">
+                                <button ng-click="changeStat(zone.card.gid,'ap',1)">^</button>
+                                <button ng-click="changeStat(zone.card.gid,'ap',-1)">⌄</button>
+                            </div>
+                        </div>
+                        <div class="menu">
+                            <button ng-click="toHeal.gid = zone.card.gid">Heal</button>
+                            <button ng-click="toShield.gid = zone.card.gid">Shield</button>
+                        </div>
+                    </div>
+                    <div class="status" ng-if="zone.card.currentState !== 'NORMAL'">{{ zone.card.currentState }}</div>
+                    <button ng-click="cooldown.gid = zone.card.gid" class="cd" ng-if="$index !== 8">+</button>
+                    <div class="cooldowns" ng-if="$index !== 8">
+                        <div ng-repeat="cooldown in zone.card.cooldowns track by $index" class="cooldown {{cooldown.type}}" ng-click="setMenu($parent.$index+1+'-'+$index)">
+                            <p>{{ cooldown.cooldown }}</p>
+                            <div class="menu" ng-if="menu === $parent.$index+1+'-'+$index">
+                                <button ng-click="reactivate(zone.card.gid, $index)" ng-if="cooldown.cooldown === 0">Reactivate</button>
+                                <button ng-click="refreshCooldown(zone.card.gid, $index,{ifCooldown: true,ifMana: false})" ng-if="cooldown.cooldown !== 0">Refresh Cooldown</button>
+                                <button ng-click="refreshCooldown(zone.card.gid, $index, {ifCooldown: false, ifMana: true})" ng-if="cooldown.cooldown !== 0">Restore Mana</button>
+                                <button ng-click="refreshCooldown(zone.card.gid, $index, {ifCooldown: true, ifMana: true})" ng-if="cooldown.cooldown !== 0">Restore CD + Mana</button>
+                                <button ng-click="removeCooldown(zone.card.gid, $index)">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <img ng-src="{{ zone.card.img }}" ng-mouseover="onHover(zone.card.id)" ng-click="setMenu($index+1,'ally')"/>
+                    <div class="icons">
+                        <div class="marks">
+                            <div ng-repeat="mark in zone.card.marks">
+                                <img src="/static/resources/icons/{{mark}}.png" title="{{mark}}">
+                            </div>
+                        </div>
+                        <div class="stacks">
+                            <div ng-repeat="(stack, num) in zone.card.stacks">
+                                <label>{{num}}</label>
+                                <img src="/static/resources/icons/{{stack}}.png" title="{{stack}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="toEquip.gid !== null || toTarget.gid != null" ng-click="target(zone.card.gid,'ally','unit')" class="target"></div>
+                    <div class="menu" ng-if="menu === $index + 1">
+                        <button ng-click="toAttack.gid = zone.card.gid" ng-if="$parent.$index !== 8">Attack</button>
+                        <button ng-click="reposition(zone.card.gid, {position:menu, side:'ally'})" ng-if="$parent.$index !== 8">Reposition</button>
+                        <button ng-click="to(zone.card.gid, {position:menu, side:'ally'},{position: 'fountain',side:null})">Send to Fountain</button>
+                        <button ng-click="to(zone.card.gid, {position:menu, side:'ally'},{position:'banished',side:null})">Banish</button>
+                        <button ng-click="to(zone.card.gid, {position:menu, side:'ally'},{position:'hand',side:null})">Send to Hand</button>
+                        <button ng-click="to(zone.card.gid, {position:menu, side:'ally'},{position:'deck',side:null})">Shuffle into Deck</button>
+                        <button ng-click="changeState(zone.card.gid, 0)" ng-if="zone.card.currentState !== 'NORMAL'">Normal</button>
+                        <button ng-click="changeState(zone.card.gid, 1)" ng-if="zone.card.currentState !== 'DISABLE'">Disable</button>
+                        <button ng-click="changeState(zone.card.gid, 2)" ng-if="zone.card.currentState !== 'UNTARGETABLE'">Untargetable</button>
+                        <button ng-click="changeState(zone.card.gid, 3)" ng-if="zone.card.currentState !== 'KNOCKUP'">Knock Up</button>
+                        <button ng-click="changeState(zone.card.gid, 4)" ng-if="zone.card.currentState !== 'SLOW'">Slow</button>
+                    </div>
+                    <div ng-repeat="eq in zone.card.equipped track by $index" class="card equipped-{{ $index }}" id="{{ eq.gid }}" >
+                        <img ng-src="{{ eq.img }}" ng-mouseover="onHover(eq.id)"/>
+                    </div>
+                    <div ng-if="shieldTarget.gid !== null || healTarget.gid !== null" ng-click="target(zone.card.gid,'ally','unit')" class="target"></div>
+                </div>
+
+                <div class="token {{ token.currentState.toLowerCase() }}" id="{{ zone.card.gid }}" ng-repeat="token in zone.tokens" ng-if="$parent.$index !== 8" ng-init="z = $parent.$parent.$index">
+                    <div class="stats" >
+                        <div class="hp">
+                            <p>{{ token.hp }}<span ng-if="token.shield > 0" class="shield">({{ token.shield }})</span>|</p>
+                        </div>
+                        <div class="ad">
+                            <p>{{ token.ad }}</p>
+                        </div>
+                    </div>
+                    <div class="status" ng-if="token.currentState !== 'NORMAL'">{{ token.currentState }}</div>
+                    <img ng-src="{{ token.img }}" ng-mouseover="onHover(token.id)"/>
+                    <div class="icons">
+                        <div class="marks">
+                            <div ng-repeat="mark in token.marks">
+                                <img src="/static/resources/icons/{{mark}}.png" title="{{mark}}">
+                            </div>
+                        </div>
+                        <div class="stacks">
+                            <div ng-repeat="(stack, num) in token.stacks">
+                                <label>{{num}}</label>
+                                <img src="/static/resources/icons/{{stack}}.png" title="{{stack}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu" ng-if="state.player.id === token.owner">
+                        <button ng-click="toAttack.gid = token.gid">Attack</button>
+                        <button ng-click="reposition(token.gid, {position:z + 1, side:'ally'},'token')">Reposition</button>
+                        <button ng-click="to(token.gid, {position:z + 1, side:'ally'}, {position:'banished', side:nulls},'token')">Remove</button>
+                        <button ng-click="toHeal.gid = token.gid">Heal</button>
+                        <button ng-click="toShield.gid = token.gid">Shield</button>
+                        <button ng-click="changeState(token.gid, 0)" ng-if="token.currentState !== 'NORMAL'">Normal</button>
+                        <button ng-click="changeState(token.gid, 1)" ng-if="token.currentState !== 'DISABLE'">Disable</button>
+                        <button ng-click="changeState(token.gid, 2)" ng-if="token.currentState !== 'UNTARGETABLE'">Untargetable</button>
+                        <button ng-click="changeState(token.gid, 3)" ng-if="token.currentState !== 'KNOCKUP'">Knock Up</button>
+                        <button ng-click="changeState(token.gid, 4)" ng-if="token.currentState !== 'SLOW'">Slow</button>
+                    </div>
+                    <div ng-if="shieldTarget.gid !== null || healTarget.gid !== null" ng-click="target(zone.token.gid,'ally','unit')" class="target"></div>
+                </div>
+
+                <div class="icons">
+                    <div class="marks">
+                        <div ng-repeat="mark in zone.marks">
+                            <img src="/static/resources/icons/{{mark}}.png">
+                        </div>
+                    </div>
+                    <div class="stacks">
+                        <div ng-repeat="(stack, num) in zone.stacks">
+                            <label>{{num}}</label>
+                            <img src="/static/resources/icons/{{stack}}.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="zone-details" ng-click="setDetails($index+1,'ally','zone')" ng-if="$index !== 8"></div>
+                <div ng-if="toSummon.gid !== null || toReposition.gid !== null || token.name !== ''" ng-click="target($index+1,'ally','zone')" class="target"></div>
+                <label ng-if="$index !== 8">{{ $index+1 }}</label>
+            </div>
+        </div>
+        <div id="ally-structures">
+            <div ng-repeat="structure in state.structures track by $index" id="ally-structure-{{$index}}" class="structure ally" ng-if="structure.active">
+                <div class="hp">
+                    <div ng-repeat="hp in getNumber(structure.hp) track by $index"></div>
+                </div>
+                <img src="/static/resources/ally-tower.png" ng-if="structure.type === 'tower'">
+                <img src="/static/resources/ally-inhib.png" ng-if="structure.type === 'inhibitor'">
+                <img src="/static/resources/ally-nexus.png" ng-if="structure.type === 'nexus'">
+                <div ng-if="toTarget.gid !== null" ng-click="target($index+1,'ally','structure')" class="target"></div>
+            </div>
+        </div>
+        <div id="neutral">
+            <div id="drag" class="card-zones">
+                <div class="card" id="{{ state.dragon.card.gid }}" ng-mouseover="onHover(state.dragon.card.id)" ng-if="state.dragon.card !== null">
+                    <div class="stats"> {{ state.dragon.card.hp }} | {{ state.dragon.card.ad }} </div>
+                    <img ng-src="{{ state.dragon.card.img }}" ng-click="setDetails('d')"/>
+                </div>
+                <div class="icons">
+                    <div class="marks">
+                        <div ng-repeat="mark in state.dragon.card.marks">
+                            <img src="/static/resources/icons/{{mark}}.png" title="{{mark}}">
+                        </div>
+                    </div>
+                    <div class="stacks">
+                        <div ng-repeat="(stack, num) in state.dragon.card.stacks">
+                            <label>{{num}}</label>
+                            <img src="/static/resources/icons/{{stack}}.png" title="{{stack}}">
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="toAttack.gid !== null || damageTarget.gid !== null" ng-click="target(state.dragon.card.gid,null,'unit')" class="target"></div>
+            </div>
+            <div id="baron" class="card-zones">
+                <div class="card" id="{{ state.baron.card.gid }}" ng-mouseover="onHover(state.baron.card.id)" ng-if="state.baron.card !== null">
+                    <div class="stats"> {{ state.baron.card.hp }} | {{ state.baron.card.ad }} </div>
+                    <img ng-src="{{ state.baron.card.img }}" ng-click="setDetails('b')"/>
+                </div>
+                <div class="icons">
+                    <div class="marks">
+                        <div ng-repeat="mark in state.baron.card.marks">
+                            <img src="/static/resources/icons/{{mark}}.png" title="{{mark}}">
+                        </div>
+                    </div>
+                    <div class="stacks">
+                        <div ng-repeat="(stack, num) in state.baron.card.stacks">
+                            <label>{{num}}</label>
+                            <img src="/static/resources/icons/{{stack}}.png" title="{{stack}}">
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="toAttack.gid !== null || damageTarget.gid !== null" ng-click="target(state.baron.card.gid,null,'unit')" class="target"></div>
+            </div>
+        </div>
+        <div id="enemy-structures">
+            <div ng-repeat="structure in state.enemyStructures track by $index" id="enemy-structure-{{$index}}" class="structure enemy" ng-if="structure.active">
+                <div class="hp">
+                    <div ng-repeat="hp in getNumber(structure.hp) track by $index"></div>
+                </div>
+                <img src="/static/resources/enemy-tower.png" ng-if="structure.type === 'tower'">
+                <img src="/static/resources/enemy-inhib.png" ng-if="structure.type === 'inhibitor'">
+                <img src="/static/resources/enemy-nexus.png" ng-if="structure.type === 'nexus'">
+                <div ng-if="toAttack.gid !== null" ng-click="target($index+1,'enemy','structure')" class="target"></div>
+            </div>
+        </div>
+        <div id="enemy-field">
+            <div ng-repeat="zone in state.enemyField track by $index" id="e{{ $index+1 }}" ng-class="class($index, 'enemy')">
+                <div class="card {{ zone.card.currentState.toLowerCase() }} enemy" id="{{ zone.card.gid }}" ng-if="zone.card !== null">
+                    <div class="cooldowns">
+                        <div ng-repeat="cooldown in zone.card.cooldowns" class="cooldown {{cooldown.type}}"><p>{{ cooldown.cooldown }}</p></div>
+                    </div>
+                    <div class="stats" ng-if="$index !== 8" > {{ zone.card.hp }} | {{ zone.card.ad }} <span ng-if="zone.card.ctype === 'CHAMPION'">| {{ zone.card.ap }}</span></div>
+                    <img ng-src="{{ zone.card.img }}" ng-mouseover="onHover(zone.card.id)" ng-click="setDetails($index+1,'enemy')"/>
+                    <div class="icons enemy">
+                        <div class="marks">
+                            <div ng-repeat="mark in zone.card.marks">
+                                <img src="/static/resources/icons/{{mark}}.png" title="{{mark}}">
+                            </div>
+                        </div>
+                        <div class="stacks">
+                            <div ng-repeat="(stack, num) in zone.card.stacks">
+                                <label>{{num}}</label>
+                                <img src="/static/resources/icons/{{stack}}.png" title="{{stack}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="toAttack.gid !== null || damageTarget.gid !== null" ng-click="target(zone.card.gid,'enemy','unit')" class="target"></div>
+                    <div ng-repeat="eq in zone.card.equipped track by $index" class="card equipped-{{ $index }}" id="{{ eq.gid }}" ng-mouseover="onHover(eq.id)">
+                        <img ng-src="{{ eq.img }}"/>
+                    </div>
+                </div>
+
+                <div class="token {{ token.currentState.toLowerCase() }} enemy" id="{{ zone.card.gid }}" ng-repeat="token in zone.tokens" ng-if="$parent.$index !== 8" ng-init="z = $parent.$parent.$index">
+                    <div class="stats" >
+                        <div class="hp">
+                            <p>{{ token.hp }}<span ng-if="token.shield > 0" class="shield">({{ token.shield }})</span>|</p>
+                        </div>
+                        <div class="ad">
+                            <p>{{ token.ad }}</p>
+                        </div>
+                    </div>
+                    <div class="status" ng-if="token.currentState !== 'NORMAL'">{{ token.currentState }}</div>
+                    <img ng-src="{{ token.img }}" ng-mouseover="onHover(token.id)" title="{{token.name}}"/>
+                    <div class="icons">
+                        <div class="marks">
+                            <div ng-repeat="mark in token.marks">
+                                <img src="/static/resources/icons/{{mark}}.png" title="{{mark}}">
+                            </div>
+                        </div>
+                        <div class="stacks">
+                            <div ng-repeat="(stack, num) in token.stacks">
+                                <label>{{num}}</label>
+                                <img src="/static/resources/icons/{{stack}}.png" title="{{stack}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu" ng-if="state.player.id === token.owner">
+                        <button ng-click="toAttack.gid = token.gid">Attack</button>
+                        <button ng-click="reposition(token.gid, {position:z + 1, side:'enemy'},'token')">Reposition</button>
+                        <button ng-click="to(token.gid, {position:z + 1, side:'enemy'}, {position:'banished',side: null},'token')">Remove</button>
+                        <button ng-click="toHeal.gid = token.gid">Heal</button>
+                        <button ng-click="toShield.gid = token.gid">Shield</button>
+                        <button ng-click="changeState(token.gid, 0)" ng-if="token.currentState !== 'NORMAL'">Normal</button>
+                        <button ng-click="changeState(token.gid, 1)" ng-if="token.currentState !== 'DISABLE'">Disable</button>
+                        <button ng-click="changeState(token.gid, 2)" ng-if="token.currentState !== 'UNTARGETABLE'">Untargetable</button>
+                        <button ng-click="changeState(token.gid, 3)" ng-if="token.currentState !== 'KNOCKUP'">Knock Up</button>
+                        <button ng-click="changeState(token.gid, 4)" ng-if="token.currentState !== 'SLOW'">Slow</button>
+                    </div>
+                    <div ng-if="shieldTarget.gid !== null || healTarget.gid !== null" ng-click="target(token.gid,'enemy','unit')" class="target"></div>
+                </div>
+
+                <div class="icons enemy">
+                    <div class="marks">
+                        <div ng-repeat="mark in zone.marks">
+                            <img src="/static/resources/icons/{{mark}}.png" title="{{mark}}">
+                        </div>
+                    </div>
+                    <div class="stacks">
+                        <div ng-repeat="(stack, num) in zone.stacks">
+                            <label>{{num}}</label>
+                            <img src="/static/resources/icons/{{stack}}.png" title="{{stack}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="zone-details" ng-click="setDetails($index+1,'enemy','zone')" ng-if="$index !== 8"></div>
+                <div ng-if="token.name !== '' || (toReposition.gid !== null && toReposition.type === 'token')" ng-click="target($index+1,'enemy','zone')" class="target"></div>
+                <label ng-if="$index !== 8">{{ $index+1 }}</label>
+            </div>
+            <div id="enemy-deck" class="card-zones deck searchable enemy">
+                <div class="searching" ng-if="searching === 'enemyDeck'"><p>Searching...</p></div>
+                <label>{{ state.enemyDeck }}</label>
+                <img src="/static/resources/cardback.jpg"/>
+            </div>
+            <div id="enemy-ftn" class="card-zones searchable enemy" ng-click="search('enemyFountain')">
+                <div class="searching" ng-if="searching === 'enemyFountain'"><p>Searching...</p></div>
+                <div ng-repeat="card in state.enemyFountain">
+                    <div class="card" id="{{ card.gid }}" ng-mouseover="onHover(card.id)">
+                        <img ng-src="{{ card.img }}"/>
+                    </div>
+                </div>
+                <label>{{ state.enemyFountain.length }}</label>
+            </div>
+            <div id="enemy-banished" class="card-zones searchable enemy" ng-click="search('enemyBanished')">
+                <div class="searching" ng-if="searching === 'enemyBanished'"><p>Searching...</p></div>
+                <div ng-repeat="card in state.enemyBanished">
+                    <div class="card" id="{{ card.gid }}" ng-mouseover="onHover(card.id)">
+                        <img ng-src="{{ card.img }}"/>
+                    </div>
+                </div>
+                <label>{{ state.enemyBanished.length }}</label>
+            </div>
+        </div>
+    </div>
+    <div id="enemy">
+        <img src="/static/resources/Summoner_Worlds_icon.png">
+        <p class="player-name">{{ state.enemy }}</p>
+        <p>Level: {{ state.enemyLevel }}</p>
+        <p>Mana: {{ state.enemyMana.currentMana }}/{{ state.enemyMana.totalMana }}</p>
+    </div>
+    <div id="enemy-hand" class="hand">
+        <div ng-repeat="i in getNumber(state.enemyHand) track by $index" class="card">
+            <img src="/static/resources/cardback.jpg"/>
+        </div>
+    </div>
+
+    <button id="next-button" ng-if="state.player.name === state.game.turnPlayer" ng-click="next()">Next</button>
+</div>
+
+<div id="preview-container" ng-controller="PreviewController">
+    <div ng-if="card != null">
+        <img ng-src="{{  card.img }}" class="preview card">
+        <div id="info">
+            <div id="card-title">
+                <h2>{{  card.name }}</h2>
+            </div>
+            <div ng-if="card.cardtype=='CHAMPION'" id="champion-preview">
+                <p><span id="epithet">{{  card.epithet }}</span><br/>{{  card.region }} <br/> {{  card.class[0] }}<span ng-if="card.class[1] != null"> | {{  card.class[1] }} </span> <br/> {{  card.type[0] }}<span ng-if="card.type[1] != null"> | {{  card.type[1] }}</span><br/> HP {{  card.hp }} | AD {{  card.ad }} | AP {{  card.ap }}
+                </p>
+            </div>
+            <div ng-if="card.cardtype=='ITEM'" id="item-preview">
+                <p>HP +{{  card.hp }} | AD +{{  card.ad }} | AP +{{  card.ap }}<br/><span ng-repeat="stat in card.stats">+{{  stat["qty"] }} {{  stat["stat"] }} <span ng-if="$index < card.stats.length - 1"> | </span> </span>
+                </p>
+            </div>
+            <div ng-if="card.cardtype=='SUMMONERSPELL'" id="spell-preview">
+                <p>{{  card.type }}</p>
+            </div>
+            <div ng-if="card.cardtype=='PET' || card.cardtype=='NEUTRALMONSTER'" id="monster-preview">
+                <p>HP {{  card.hp }} | AD {{  card.ad }} | AP {{  card.ap }}</p>
+            </div>
+            <p id="card-text">{{  card.text }}</p>
+        </div>
+    </div>
+</div>

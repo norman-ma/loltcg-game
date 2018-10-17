@@ -1,0 +1,23 @@
+body{
+    background:#080808;
+}
+
+#bg{
+    position: absolute;
+    left:0px;
+    width: 100%;
+    overflow:hidden;
+    opacity:0.5;
+    object-fit: cover
+}
+
+#logo{
+    position: relative;
+    z-index:2;
+    left: 20%;
+    top: 100px;
+}
+
+footer{
+    visibility: hidden;
+}
