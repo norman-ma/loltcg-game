@@ -12,7 +12,7 @@ var io = socketio(server);
 
 io.setMaxListeners(0);
 
-var port = process.ENV.PORT || 80;
+var port = process.env.PORT || 8800;
 
 app.set('port', 5000);
 app.use('/static', express.static(path.join(__dirname, '/app/static')));
