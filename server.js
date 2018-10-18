@@ -22,8 +22,12 @@ app.get('/',function(req,res){
     res.sendFile(path.join(__dirname, 'app/templates/index.html'));
 });
 
-server.listen(8800, function(){
-    console.log('starting on port 8800')
+//server.listen(8800, function(){
+//     console.log('starting on port 8800')
+// });
+
+server.listen(80, function(){
+    console.log('starting on port 80')
 });
 
 var players = [];
