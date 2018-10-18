@@ -4,7 +4,6 @@ var http = require('http');
 var path = require('path');
 var socketio = require('socket.io');
 
-var req = require('request-promise');
 var parser = require('body-parser');
 
 var app = express();

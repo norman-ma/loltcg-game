@@ -2,7 +2,7 @@
   "name": "game",
   "version": "1.0.0",
   "description": "",
-  "main": "game.js",
+  "main": "server.js",
   "dependencies": {
     "express": "^4.16.3",
     "request": "^2.88.0",
@@ -14,6 +14,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "mikexcelsior",
   "license": "ISC"
 }
