@@ -12,6 +12,8 @@ var io = socketio(server);
 
 io.setMaxListeners(0);
 
+var port = process.ENV.PORT || 80;
+
 app.set('port', 5000);
 app.use('/static', express.static(path.join(__dirname, '/app/static')));
 
@@ -22,12 +24,8 @@ app.get('/',function(req,res){
     res.sendFile(path.join(__dirname, 'app/templates/index.html'));
 });
 
-//server.listen(8800, function(){
-//     console.log('starting on port 8800')
-// });
-
-server.listen(80, function(){
-    console.log('starting on port 80')
+server.listen(port, function(){
+    console.log('starting on port ' + port);
 });
 
 var players = [];
