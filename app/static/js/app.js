@@ -705,7 +705,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
 
     $scope.rollDie = function(){
         $scope.result = Math.floor(Math.random() * 6) + 1;
-        socket.emit('random', $scope.result);
+        socket.emit('random', {id: $scope.state.game.id, result: $scope.result});
     };
 
     $scope.fieldbg = '';
