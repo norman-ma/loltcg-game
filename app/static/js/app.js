@@ -700,6 +700,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
 
     socket.on('enemy-random',function(data){
         $scope.result = data;
+        $scope.$apply();
     });
 
     $scope.rollDie = function(){
