@@ -1307,7 +1307,7 @@ io.on('connection', function(socket){
            enemy = state.player1;
         }
 
-        io.to(enemy.id).emit('enemy-random', data.val);
+        io.to(enemy.id).emit('enemy-random', data.result);
     });
 });
 
