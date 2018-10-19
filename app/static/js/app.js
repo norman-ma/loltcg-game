@@ -241,22 +241,22 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     });
 
     $scope.onHover = function(id){
-        console.log(id);
+        //console.log(id);
         socket.emit('card', id)
     };
 
     $scope.next = function(){
-        socket.emit('next');
+        socket.emit('next', $scope.state.game.id);
     };
 
     $scope.draw = function(){
-        socket.emit('draw');
+        socket.emit('draw', $scope.state.game.id);
     };
 
     $scope.search = function(zone){
         switch(zone){
             case('deck'):
-                socket.emit('search:deck');
+                socket.emit('search:deck', $scope.state.game.id);
                 break;
             default:
                 $scope.searchData = {
@@ -264,13 +264,13 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
                     cards: $scope.state[zone]
                 };
                 $scope.doSearch = true;
-                socket.emit('searching',$scope.searchData.name);
+                socket.emit('searching',{name: $scope.searchData.name, id: $scope.state.game.id});
                 break;
         }
     };
 
     $scope.doneSearch = function() {
-        socket.emit('search:done', $scope.searchData.name);
+        socket.emit('search:done', {name: $scope.searchData.name, id: $scope.state.game.id});
         $scope.searchData = {};
         $scope.doSearch = false;
     };
@@ -297,9 +297,11 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     });
 
     $scope.to = function(gid, from, to, type='card'){
-        var data = {gid:gid,
-            from:from,
-            to:to,
+        var data = {
+            id: $scope.state.game.id,
+            gid: gid,
+            from: from,
+            to: to,
             type: type
         };
         console.log('to',data);
@@ -325,6 +327,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
         }
 
         if($scope.toAttack.gid !== null){
+            $scope.toAttack.id = $scope.state.game.id;
             $scope.toAttack.target = target;
             $scope.toAttack.type = type;
             console.log('attack',$scope.toAttack);
@@ -334,6 +337,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
         }
 
         if($scope.toEquip.gid !== null){
+            $scope.toEquip.id = $scope.state.game.id;
             $scope.toEquip.target = target;
             console.log('equip',$scope.toEquip);
             socket.emit('equip',$scope.toEquip);
@@ -350,6 +354,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
         }
 
         if($scope.token.name !== ""){
+            $scope.token.id = $scope.state.game.id;
             $scope.token.to = target;
             $scope.token.side = side;
             console.log('token', $scope.token);
@@ -360,22 +365,26 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
         }
 
         if($scope.damageTarget.gid !== null){
+            $scope.damageTarget.id = $scope.state.game.id;
             $scope.damageTarget.targets.push(target);
             $scope.damageTarget.types.push(type);
             console.log('damage', target);
         }
 
         if($scope.healTarget.gid !== null){
+            $scope.healTarget.id = $scope.state.game.id;
             $scope.healTarget.targets.push(target);
             console.log('heal', target);
         }
 
         if($scope.shieldTarget.gid !== null){
+            $scope.shieldTarget.id = $scope.state.game.id;
             $scope.shieldTarget.targets.push(target);
             console.log('shield', target);
         }
 
         if($scope.toTarget.gid !== null){
+            $scope.toTarget.id = $scope.state.game.id;
             $scope.toTarget.target = target;
             $scope.toTarget.side = side;
             $scope.toTarget.type = type;
@@ -387,16 +396,18 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     };
 
      $scope.summon = function(gid,from){
+        $scope.toSummon.id = $scope.state.game.id;
         $scope.toSummon.gid = gid;
         $scope.toSummon.from = from;
     };
 
     $scope.activate = function(gid){
-        var data = {gid: gid, duration: 0};
+        var data = {id:$scope.state.game.id, gid: gid, duration: 0};
         socket.emit('activate',data);
     };
 
     $scope.reposition = function(gid, from, type = 'card'){
+        $scope.toReposition.id = $scope.state.game.id;
         $scope.toReposition.gid = gid;
         $scope.toReposition.from = from;
         $scope.toReposition.type = type;
@@ -510,10 +521,11 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     };
 
     $scope.changeSpecial = function(gid,key,num){
-        socket.emit('change:special',{gid:gid, stat:key, num:num});
+        socket.emit('change:special',{id:$scope.state.game.id, gid:gid, stat:key, num:num});
     };
 
     $scope.markTarget = function(gid){
+        $scope.mark.id = $scope.state.game.id;
         $scope.mark.gid = gid;
         $scope.mark.add = true;
         console.log($scope.mark);
@@ -522,6 +534,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     };
 
     $scope.unmarkTarget = function(gid, mark){
+        $scope.mark.id = $scope.state.game.id;
         $scope.mark.gid = gid;
         $scope.mark.mark = mark;
         $scope.mark.add = false;
@@ -530,6 +543,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     };
 
     $scope.addStack = function(gid, stack=null, num=0){
+        $scope.stack.id = $scope.state.game.id;
         $scope.stack.gid = gid;
         $scope.stack.add = true;
         if(stack !== null){
@@ -545,6 +559,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     };
 
     $scope.removeStack = function(gid, stack){
+        $scope.stack.id = $scope.state.game.id;
         $scope.stack.gid = gid;
         $scope.stack.add = false;
         $scope.stack.stack = stack;
@@ -553,6 +568,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     };
 
     $scope.addCooldown = function(){
+        $scope.cooldown.id = $scope.state.game.id;
         console.log($scope.cooldown.gid, $scope.cooldown);
         socket.emit('activate:ability',$scope.cooldown);
 
@@ -563,6 +579,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     $scope.refreshCooldown = function(gid, index, options){
         console.log(gid, index);
         socket.emit('refresh:ability',{
+            id: $scope.state.game.id,
             gid: gid,
             index: index,
             options: options
@@ -572,6 +589,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     $scope.removeCooldown = function(gid, index){
         console.log(gid, index);
         socket.emit('remove:ability',{
+            id: $scope.state.game.id,
             gid: gid,
             index: index
         });
@@ -580,6 +598,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     $scope.reactivate = function(gid, index){
         console.log(gid, index);
         socket.emit('reactivate:ability',{
+            id: $scope.state.game.id,
             gid: gid,
             index: index
         });
@@ -588,12 +607,15 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     socket.on('ability:effect', function(data){
         switch(data.effect){
             case('heal'):
+                $scope.healTarget.id = $scope.state.game.id;
                 $scope.healTarget.gid = data.gid;
                 break;
             case('shield'):
+                $scope.shieldTarget.id = $scope.state.game.id;
                 $scope.shieldTarget.gid = data.gid;
                 break;
             case('damage'):
+                $scope.damageTarget.id = $scope.state.game.id;
                 $scope.damageTarget.gid = data.gid;
                 break;
         }
@@ -634,12 +656,12 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
 
     $scope.changeState = function(gid, state){
         console.log(gid, state);
-        socket.emit('change:state',{gid: gid, state: state});
+        socket.emit('change:state',{id: $scope.state.game.id, gid: gid, state: state});
     };
 
     $scope.changeStat = function(gid, stat, val){
         console.log(gid, stat, val);
-        socket.emit('change:stat', {gid: gid, stat: stat, val: val});
+        socket.emit('change:stat', {id: $scope.state.game.id, gid: gid, stat: stat, val: val});
     };
 
     $scope.shield = function(){
@@ -653,15 +675,15 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     };
 
     $scope.levelUp = function(){
-        socket.emit('levelUp');
+        socket.emit('levelUp', $scope.state.game.id);
     };
 
     $scope.restoreMana = function(val){
-        socket.emit('restore:mana',val);
+        socket.emit('restore:mana',{val:val, id: $scope.state.game.id});
     };
 
     $scope.damage = function(gid,val){
-        socket.emit('damage',{gid:gid, val:val});
+        socket.emit('damage',{id: $scope.state.game.id,gid:gid, val:val});
     };
 
     $scope.result = "-";
@@ -673,10 +695,10 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
         }else{
             $scope.result = 'TAILS';
         }
-        socket.emit('random', $scope.result);
+        socket.emit('random', {id: $scope.state.game.id, result: $scope.result});
     };
 
-    socket.on('random',function(data){
+    socket.on('enemy-random',function(data){
         $scope.result = data;
     });
 

@@ -999,7 +999,6 @@ class Player{
     constructor(id, name, deck){
         this.name = name;
         this.id = id;
-
         this.hand = new Hand();
         this.deck = new Deck(deck);
         this.fountain = new Zone([],'fountain');
@@ -1407,9 +1406,21 @@ class Event{
     }
 }
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
 
 class Game{
     constructor(p1,p2){
+
+        this.id = guid();
+
         this.player1 = new Player(p1.id,p1.name,p1.cards);
         this.player2 = new Player(p2.id,p2.name,p2.cards);
         this.neutral = new Neutral();
@@ -1417,6 +1428,7 @@ class Game{
         this.turnPlayer = this.player1;
         this.phase = 0;
         this.phases = ["Precombat Phase", "Battle Phase", "Postcombat Phase"];
+
 
         this.phaseCount = 0;
         this.turnCount = 0;
@@ -1773,6 +1785,7 @@ class Game{
         out.player2.enemy = out.player1.player.name;
 
         let game = {
+            'id': this.id,
             'turn':this.turn,
             'turnPlayer': this.turnPlayer.name,
             'phase': this.phases[this.phase]

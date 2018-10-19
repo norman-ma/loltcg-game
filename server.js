@@ -29,7 +29,8 @@ server.listen(port, function(){
 });
 
 var players = [];
-var state = null;
+var games = {};
+
 io.on('connection',function(socket){
     socket.on('newplayer', function(data){
         var player = {
@@ -41,19 +42,25 @@ io.on('connection',function(socket){
         //console.log(players.length);
         socket.join('game');
         if(players.length === 2) {
-            var coinflip = Math.floor(Math.random() * 2);
+            let coinflip = Math.floor(Math.random() * 2);
+            let state;
             if (coinflip === 0) {
                 state = new game.Game(players[0], players[1]);
             } else {
                 state = new game.Game(players[1], players[0]);
             }
             state.start();
+            games[state.id] = state;
             players = [];
-            io.sockets.emit("start");
+
+            io.to(state.player1.id).emit("start");
+            io.to(state.player2.id).emit("start");
 
             setTimeout(function(){
-                update();
+                update(state.id);
             },1500);
+
+            console.log(Object.keys(games));
         }
     });
 });
@@ -65,26 +72,32 @@ io.on('connection', function(socket){
 });
 
 io.on('connection', function(socket){
-    socket.on('next',function(){
+    socket.on('next',function(id){
+        let state = games[id];
         state.next();
-        update();
+        update(state.id);
     });
 });
 
 io.on('connection', function(socket){
-    socket.on('draw',function(){
+    socket.on('draw',function(id){
+
+        let state = games[id];
+
         if(state.player1.is(socket.id)){
             state.player1.draw();
         }else if(state.player2.is(socket.id)){
             state.player2.draw();
         }
-        update();
+        update(state.id);
     });
 });
 
 
 io.on('connection', function(socket){
-    socket.on('search:deck',function(){
+    socket.on('search:deck',function(id){
+        let state = games[id];
+
         if(state.player1.is(socket.id)){
             io.to(state.player1.id).emit('deck',state.player1.deck.getCards());
             io.to(state.player2.id).emit('enemysearch','enemyDeck');
@@ -98,23 +111,31 @@ io.on('connection', function(socket){
 
 io.on('connection', function(socket){
     socket.on('search:done',function(data){
+
+        let state = games[data.id];
+
+        let player, enemy;
         if(state.player1.is(socket.id)){
-            if(data === 'deck') {
-                state.player1.deck.shuffle();
-            }
-            io.to(state.player2.id).emit('done:search');
-        }else if(state.player2.is(socket.id)){
-            if(data === 'deck') {
-                state.player2.deck.shuffle();
-            }
-            io.to(state.player1.id).emit('done:search');
+            player = state.player1;
+            enemy = state.player2;
+        }else{
+            player = state.player2;
+            enemy = state.player1;
         }
+
+        if(data.name === 'deck'){
+            player.deck.shuffle();
+        }
+
+        io.to(enemy.id).emit('done:search');
         console.log('search:done');
     });
 });
 
 io.on('connection', function(socket){
     socket.on('searching',function(data){
+
+        let state = games[data.id];
 
         var zones = {
             hand: 'enemyHand',
@@ -126,9 +147,9 @@ io.on('connection', function(socket){
         };
 
         if(state.player1.is(socket.id)){
-            io.to(state.player2.id).emit('enemysearch',zones[data]);
+            io.to(state.player2.id).emit('enemysearch',zones[data.name]);
         }else if(state.player2.is(socket.id)) {
-            io.to(state.player1.id).emit('enemysearch', zones[data]);
+            io.to(state.player1.id).emit('enemysearch', zones[data.name]);
         }
         console.log('searching');
     });
@@ -136,6 +157,9 @@ io.on('connection', function(socket){
 
 io.on('connection', function(socket){
     socket.on('send:unit', function(data){
+
+        let state = games[data.id];
+
         var player, enemy;
 
         if(state.player1.is(socket.id)){
@@ -265,12 +289,15 @@ io.on('connection', function(socket){
             }
             state.log(event);
         }
-        update();
+        update(state.id);
     })
 });
 
 io.on('connection',function(socket){
    socket.on('summon', function(data){
+
+       let state = games[data.id];
+
        var player, enemy;
 
        if(state.player1.is(socket.id)){
@@ -307,13 +334,16 @@ io.on('connection',function(socket){
             from.sendTo(card, to);
             state.log(event);
             console.log('summon',card.gid);
-            update();
+            update(state.id);
         }
    });
 });
 
 io.on('connection',function(socket){
    socket.on('summon:token', function(data){
+
+       let state = games[data.id];
+
        var player, enemy;
 
        if(state.player1.is(socket.id)){
@@ -344,12 +374,15 @@ io.on('connection',function(socket){
         to.addToken(token);
         state.log(event);
         console.log('token',token.gid, data.side, data.to);
-        update();
+        update(state.id);
    });
 });
 
 io.on('connection',function(socket){
    socket.on('attack', function(data){
+
+       let state = games[data.id];
+
        var player, enemy;
 
        if(state.player1.is(socket.id)){
@@ -452,7 +485,7 @@ io.on('connection',function(socket){
                    }
                }
 
-               update();
+               update(state.id);
                console.log('attack', target.gid);
 
            }else if(data.type === 'structure'){
@@ -471,7 +504,7 @@ io.on('connection',function(socket){
                    state.log(event)
                }
 
-               update();
+               update(state.id);
                console.log('attack', target.type, data.target );
 
            }
@@ -481,6 +514,9 @@ io.on('connection',function(socket){
 
 io.on('connection',function(socket){
    socket.on('damage',function(data){
+
+       let state = games[data.id];
+
        if(state.player1.is(socket.id)){
            player = state.player1;
        }else{
@@ -491,13 +527,16 @@ io.on('connection',function(socket){
 
        unit.takeDamage(data.val);
 
-       update();
+       update(state.id);
        console.log('damage', unit.gid, data.val );
    })
 });
 
 io.on('connection',function(socket){
     socket.on('equip',function(data){
+
+        let state = games[data.id];
+
         var player;
 
        if(state.player1.is(socket.id)){
@@ -522,7 +561,7 @@ io.on('connection',function(socket){
            target.equip(card);
            player.hand.removeCard(card);
            state.log(event);
-           update();
+           update(state.id);
            console.log("equip", card.gid, target.gid);
        }
     });
@@ -530,6 +569,9 @@ io.on('connection',function(socket){
 
 io.on('connection', function(socket){
     socket.on('activate',function(data){
+
+        let state = games[data.id];
+
         var player,enemy;
 
        if(state.player1.is(socket.id)){
@@ -556,7 +598,7 @@ io.on('connection', function(socket){
                socket.to(enemy.id).emit('reveal',options);
            }
            state.log(event);
-           update();
+           update(state.id);
            console.log('activate', card.id);
        }
     });
@@ -564,6 +606,8 @@ io.on('connection', function(socket){
 
 io.on('connection', function(socket){
     socket.on('change:special', function(data){
+
+        let state = games[data.id];
 
         var player;
         if(state.player1.is(socket.id)){
@@ -585,12 +629,14 @@ io.on('connection', function(socket){
           }
         };
         state.log(event);
-        update();
+        update(state.id);
     });
 });
 
 io.on('connection', function(socket){
     socket.on('mark', function(data){
+
+        let state = games[data.id];
 
         var player;
         if(state.player1.is(socket.id)){
@@ -664,12 +710,14 @@ io.on('connection', function(socket){
         }
 
         //console.log(state.cooldowns);
-        update();
+        update(state.id);
     });
 });
 
 io.on('connection', function(socket){
     socket.on('stack', function(data){
+
+        let state = games[data.id];
 
         var player;
         if(state.player1.is(socket.id)){
@@ -743,12 +791,15 @@ io.on('connection', function(socket){
             }
         }
         //console.log(state.cooldowns);
-        update();
+        update(state.id);
     });
 });
 
 io.on('connection',function(socket){
     socket.on('activate:ability',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -780,13 +831,16 @@ io.on('connection',function(socket){
                 console.log('cooldown', card.gid, data.duration);
             }
 
-            update();
+            update(state.id);
         }
     });
 });
 
 io.on('connection',function(socket){
     socket.on('refresh:ability',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -810,12 +864,15 @@ io.on('connection',function(socket){
         };
         state.log(event);
         console.log('refresh', card.gid, data.index, cost);
-        update();
+        update(state.id);
     });
 });
 
 io.on('connection',function(socket){
     socket.on('remove:ability',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -828,12 +885,15 @@ io.on('connection',function(socket){
         card.removeCooldown(data.index);
 
         console.log('remove', card.gid, data.index);
-        update();
+        update(state.id);
     });
 });
 
 io.on('connection',function(socket){
     socket.on('reactivate:ability',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -865,13 +925,16 @@ io.on('connection',function(socket){
                 console.log('reactivate', card.gid, data.duration);
             }
             io.to(player.id).emit('ability:effect',{gid:card.gid ,effect:card.cooldowns[data.index()].effect});
-            update();
+            update(state.id);
         }
     });
 });
 
 io.on('connection',function(socket){
     socket.on('change:state',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -894,13 +957,16 @@ io.on('connection',function(socket){
 
             state.log(event);
             console.log('change:state', unit.gid, event.state);
-            update();
+            update(state.id);
         }
     });
 });
 
 io.on('connection',function(socket){
     socket.on('change:stat',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -935,13 +1001,16 @@ io.on('connection',function(socket){
 
             state.log(event);
             console.log('change:stat', unit.gid, data.stat, data.val);
-            update();
+            update(state.id);
         }
     });
 });
 
 io.on('connection',function(socket){
     socket.on('heal',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -964,13 +1033,16 @@ io.on('connection',function(socket){
 
             state.log(event);
             console.log('heal', unit.gid, data.val);
-            update();
+            update(state.id);
         }
     });
 });
 
 io.on('connection',function(socket){
     socket.on('shield',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -994,13 +1066,16 @@ io.on('connection',function(socket){
 
             state.log(event);
             console.log('shield', unit.gid, data.val, data.duration);
-            update();
+            update(state.id);
         }
     });
 });
 
 io.on('connection',function(socket){
-    socket.on('levelUp',function(){
+    socket.on('levelUp',function(id){
+
+        let state = games[id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -1019,12 +1094,15 @@ io.on('connection',function(socket){
         };
         state.log(event);
         console.log('levelUp',player.name,player.level);
-        update()
+        update(state.id)
     })
 });
 
 io.on('connection',function(socket){
     socket.on('restore:mana',function(data){
+
+        let state = games[data.id];
+
         var player;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -1043,12 +1121,15 @@ io.on('connection',function(socket){
         };
         state.log(event);
         console.log('restoreMana',player.name, player.currentMana);
-        update()
+        update(state.id)
     })
 });
 
 io.on('connection',function(socket){
     socket.on('damage:target',function(data){
+
+        let state = games[data.id];
+
         var player,enemy;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -1095,12 +1176,15 @@ io.on('connection',function(socket){
             }
         }
 
-        update();
+        update(state.id);
     })
 });
 
 io.on('connection',function(socket){
     socket.on('heal:target',function(data){
+
+        let state = games[data.id];
+
         var player,enemy;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -1149,12 +1233,15 @@ io.on('connection',function(socket){
             }
         }
 
-        update();
+        update(state.id);
     })
 });
 
 io.on('connection',function(socket){
     socket.on('shield:target',function(data){
+
+        let state = games[data.id];
+
         var player,enemy;
         if(state.player1.is(socket.id)){
            player = state.player1;
@@ -1204,11 +1291,30 @@ io.on('connection',function(socket){
             }
         }
 
-        update();
+        update(state.id);
     })
 });
 
-function update(){
+io.on('connection', function(socket){
+    socket.on('random',function(data){
+
+        let state = games[data.id];
+
+        var enemy;
+        if(state.player1.is(socket.id)){
+           enemy = state.player2;
+        }else{
+           enemy = state.player1;
+        }
+
+        io.to(enemy.id).emit('enemy-random', data.val);
+    });
+});
+
+function update(id){
+
+    let state = games[id];
+
     var gameState = state.getGameState();
     io.to(state.player1.id).emit('update',JSON.stringify(gameState.player1));
     io.to(state.player2.id).emit('update',JSON.stringify(gameState.player2));

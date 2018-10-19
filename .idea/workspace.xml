@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c99ba4ff-d556-4300-b398-0c3353aa8c9f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/game.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -69,7 +72,7 @@
           <entry key="game" value="1" />
           <entry key="htm" value="14096" />
           <entry key="html" value="1758" />
-          <entry key="js" value="66093" />
+          <entry key="js" value="67104" />
           <entry key="json" value="23" />
           <entry key="py" value="53" />
         </counts>
@@ -79,7 +82,7 @@
           <entry key="CSS" value="58" />
           <entry key="HTML" value="15854" />
           <entry key="JSON" value="23" />
-          <entry key="JavaScript" value="66093" />
+          <entry key="JavaScript" value="67104" />
           <entry key="PLAIN_TEXT" value="68" />
           <entry key="Python" value="53" />
         </counts>
@@ -111,8 +114,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/server.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="272">
-                  <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+                <state relative-caret-position="206">
+                  <caret line="570" column="21" selection-start-line="570" selection-start-column="15" selection-end-line="570" selection-end-column="21" />
                 </state>
               </provider>
             </entry>
@@ -151,31 +154,22 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/game.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="25024">
-                  <caret line="1472" column="52" selection-start-line="1472" selection-start-column="52" selection-end-line="1472" selection-end-column="52" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/static/js/app.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="295">
-                  <caret line="663" column="48" selection-start-line="663" selection-start-column="48" selection-end-line="663" selection-end-column="48" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/package.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="289">
-                  <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+                <state relative-caret-position="316">
+                  <caret line="1791" column="10" lean-forward="true" selection-start-line="1791" selection-start-column="10" selection-end-line="1791" selection-end-column="10" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/app/static/js/app.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="206">
+                  <caret line="599" column="19" selection-start-line="599" selection-start-column="15" selection-end-line="599" selection-end-column="19" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Procfile">
               <provider selected="true" editor-type-id="text-editor">
                 <state>
@@ -199,18 +193,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Trophies</find>
-      <find>Player</find>
-      <find>Unit</find>
-      <find>slain</find>
-      <find>to</find>
       <find>hand</find>
       <find>gid</find>
       <find>sendTo</find>
       <find>console</find>
       <find>type</find>
       <find>icon</find>
-      <find>activate</find>
       <find>activa</find>
       <find>to(</find>
       <find>Equip</find>
@@ -229,6 +217,12 @@
       <find>zones[</find>
       <find>equip</find>
       <find>port</find>
+      <find>update()</find>
+      <find>update</find>
+      <find>Player</find>
+      <find>random</find>
+      <find>activate</find>
+      <find>emit</find>
     </findStrings>
     <replaceStrings>
       <replace>false</replace>
@@ -260,6 +254,7 @@
       <replace>buffs</replace>
       <replace>Buffs</replace>
       <replace>player.field.getUnit(gid).unit</replace>
+      <replace>update(state.id)</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -279,12 +274,12 @@
         <option value="$PROJECT_DIR$/app/static/css/app.css" />
         <option value="$PROJECT_DIR$/app/templates/index.html" />
         <option value="$PROJECT_DIR$/app/static/css/game.css" />
-        <option value="$PROJECT_DIR$/game.js" />
-        <option value="$PROJECT_DIR$/app/static/js/app.js" />
         <option value="$PROJECT_DIR$/app/static/templates/game.htm" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/Procfile" />
+        <option value="$PROJECT_DIR$/game.js" />
         <option value="$PROJECT_DIR$/server.js" />
+        <option value="$PROJECT_DIR$/app/static/js/app.js" />
       </list>
     </option>
   </component>
@@ -444,7 +439,7 @@
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16204691" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10394456" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="DB Browser" order="2" weight="0.32995737" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -541,20 +536,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25024">
-          <caret line="1472" column="52" selection-start-line="1472" selection-start-column="52" selection-end-line="1472" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/static/js/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="663" column="48" selection-start-line="663" selection-start-column="48" selection-end-line="663" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -569,10 +550,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/game.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="1791" column="10" lean-forward="true" selection-start-line="1791" selection-start-column="10" selection-end-line="1791" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="22" lean-forward="true" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+        <state relative-caret-position="206">
+          <caret line="570" column="21" selection-start-line="570" selection-start-column="15" selection-end-line="570" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="599" column="19" selection-start-line="599" selection-start-column="15" selection-end-line="599" selection-end-column="19" />
         </state>
       </provider>
     </entry>
