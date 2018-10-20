@@ -1,5 +1,8 @@
 <!--suppress XmlDuplicatedId -->
 <div id="game-area" ng-controller="StateController">
+    <div id="error">
+        <p ng-repeat="error in errors">{{ error.type }} :{{ error.message }}</p>
+    </div>
     <div id="reveal" ng-if="revealing">
         <div id="reveal-panel">
             <div ng-repeat="card in reveal">
@@ -199,10 +202,10 @@
 
     <div id="field-area">
         <div id="field-bg">
-            <div class="ally">
+            <div class="ally" ng-if="fieldbg !== ''">
                 <img src="{{ fieldbg }}">
             </div>
-            <div class="enemy">
+            <div class="enemy" ng-if="enemyfieldbg !== ''">
                 <img src="{{ enemyfieldbg }}">
             </div>
         </div>
@@ -497,7 +500,7 @@
                         <button ng-click="changeState(token.gid, 3)" ng-if="token.currentState !== 'KNOCKUP'">Knock Up</button>
                         <button ng-click="changeState(token.gid, 4)" ng-if="token.currentState !== 'SLOW'">Slow</button>
                     </div>
-                    <div ng-if="shieldTarget.gid !== null || healTarget.gid !== null" ng-click="target(token.gid,'enemy','unit')" class="target"></div>
+                    <div ng-if="toAttack.gid !== null || damageTarget.gid !== null" ng-click="target(token.gid,'enemy','unit')" class="target"></div>
                 </div>
 
                 <div class="icons enemy">

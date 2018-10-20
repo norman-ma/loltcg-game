@@ -640,7 +640,7 @@ io.on('connection', function(socket){
                 }
                 state.log(event);
                 update(state.id);
-                console.log('activate', card.id);
+                console.log('activate', card.gid);
             }
         } catch(err){
             error(data.id, err);
@@ -767,6 +767,7 @@ io.on('connection', function(socket){
 
 io.on('connection', function(socket){
     socket.on('stack', function(data){
+
         try {
             let state = games[data.id];
 
@@ -778,7 +779,7 @@ io.on('connection', function(socket){
             }
 
             if (data.type === 'unit') {
-                var unit = player.field.getCard(data.gid).card;
+                var unit = player.field.getUnit(data.gid).unit;
                 if (unit === -1 || unit == null) {
                     unit = state.neutral.field.getCard(data.gid).card;
                 }
@@ -795,10 +796,10 @@ io.on('connection', function(socket){
                             duration: data.duration
                         }
                     };
-                    console.log('stack', card.gid, data.num, data.stack);
+                    console.log('stack', unit.gid, data.num, data.stack);
                     state.log(event);
                 } else {
-                    card.consume(data.stack);
+                    unit.consume(data.stack);
                     let event = {
                         type: 'consumed',
                         event: {
@@ -846,6 +847,7 @@ io.on('connection', function(socket){
         } catch(err){
             error(data.id, err);
         }
+
     });
 });
 
@@ -1428,7 +1430,9 @@ function update(id){
 }
 
 function error(id, error){
+    console.log(error.name ,error.message);
     let state = games[id];
-    io.to(state.player1.id).emit('error',error);
-    io.to(state.player2.id).emit('error',error);
+    let e = {message: error.message, lineNumber: error.lineNumber, filename: error.filename, type: error.name};
+    io.to(state.player1.id).emit('error',e);
+    io.to(state.player2.id).emit('error',e);
 }

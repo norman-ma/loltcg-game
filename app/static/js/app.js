@@ -552,7 +552,7 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
         if(num !== 0){
             $scope.stack.num = num;
         }
-        console.log($scope.stack);
+        console.log('stack',$scope.stack);
         socket.emit('stack', $scope.stack);
         $scope.stack.stack = '';
         $scope.stack.num = 0;
@@ -701,6 +701,13 @@ app.controller("StateController",['$scope','socket',function($scope,socket){
     socket.on('enemy-random',function(data){
         $scope.result = data;
         $scope.$apply();
+    });
+
+    $scope.errors = [];
+
+    socket.on('error',function(data){
+        $scope.$apply($scope.errors.push(data));
+        console.error(data);
     });
 
     $scope.rollDie = function(){
