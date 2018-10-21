@@ -53,7 +53,7 @@ app.controller("ConnectController",['$scope','$http','socket','$location',functi
         fd.append('file', $("#deck")[0].files[0]);
         fd.append('verbose','true');
         $http
-            .post('https://loltcg-deckbuilder-heroku.herokuapp.com/deck/load',fd,{
+            .post('https://loltcg-home.herokuapp.com/deck/load',fd,{
                 headers: {'Content-Type': undefined}
             })
             .then(function(res){
