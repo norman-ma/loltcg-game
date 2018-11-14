@@ -25,8 +25,21 @@ app.config(function($routeProvider){
 app.controller("PreviewController",['$scope','socket',function($scope, socket){
     $scope.card = null;
 
+     var fix = function(str){
+        return str.replace("\'\'", "\'")
+    };
+
+    $scope.html = function(text){
+        return $.parseHTML(text);
+    };
+
     socket.on('card-data',function(res){
         $scope.card = res;
+        let html = $scope.html($scope.card.text);
+        $('#card-text').html('');
+        for(let line of html){
+            $('#card-text').append(line);
+        }
         $scope.$apply();
     });
 }]);
@@ -47,6 +60,9 @@ app.controller("ConnectController",['$scope','$http','socket','$location',functi
         $('#deck-name').val($('#deck').val().replace(/.*[\/\\]/, ''));
     });
 
+    $scope.setNeutral = function(){
+
+    };
 
     $scope.connect = function(){
         var fd = new FormData();
@@ -64,6 +80,8 @@ app.controller("ConnectController",['$scope','$http','socket','$location',functi
                 console.log(error);
             });
     };
+
+
 }]);
 
 app.controller("StateController",['$scope','socket',function($scope,socket){

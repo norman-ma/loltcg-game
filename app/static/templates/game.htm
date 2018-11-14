@@ -7,7 +7,7 @@
         <div id="reveal-panel">
             <div ng-repeat="card in reveal">
                 <div class="card" id="{{ card.gid }}" ng-mouseover="onHover(card.id)">
-                        <img ng-src="{{ card.img }}"/>
+                    <img ng-src="{{ card.img }}"/>
                 </div>
             </div>
         </div>
@@ -562,26 +562,26 @@
 
 <div id="preview-container" ng-controller="PreviewController">
     <div ng-if="card != null">
-        <img ng-src="{{  card.img }}" class="preview card">
+        <img ng-src="{{ card.img }}" class="preview card">
         <div id="info">
             <div id="card-title">
-                <h2>{{  card.name }}</h2>
+                <h2>{{ card.name }}</h2>
             </div>
             <div ng-if="card.cardtype=='CHAMPION'" id="champion-preview">
-                <p><span id="epithet">{{  card.epithet }}</span><br/>{{  card.region }} <br/> {{  card.class[0] }}<span ng-if="card.class[1] != null"> | {{  card.class[1] }} </span> <br/> {{  card.type[0] }}<span ng-if="card.type[1] != null"> | {{  card.type[1] }}</span><br/> HP {{  card.hp }} | AD {{  card.ad }} | AP {{  card.ap }}
+                <p><span id="epithet">{{ card.epithet }}</span><br/>{{ card.region }} <br/> {{ card.class[0] }}<span ng-if="card.class[1] != 'null'"> | {{ card.class[1] }} </span> <br/> {{ card.type[0] }}<span ng-if="card.type[1] != 'null'"> | {{ card.type[1] }}</span><br/> HP {{ card.hp }} | AD {{ card.ad }} | AP {{ card.ap }}
                 </p>
             </div>
             <div ng-if="card.cardtype=='ITEM'" id="item-preview">
-                <p>HP +{{  card.hp }} | AD +{{  card.ad }} | AP +{{  card.ap }}<br/><span ng-repeat="stat in card.stats">+{{  stat["qty"] }} {{  stat["stat"] }} <span ng-if="$index < card.stats.length - 1"> | </span> </span>
+                <p>HP +{{ card.hp }} | AD +{{ card.ad }} | AP +{{ card.ap }}<br/><span ng-repeat="stat in card.stats">+{{ stat["qty"] }} {{ stat["stat"] }} <span ng-if="$index < card.stats.length - 1"> | </span> </span>
                 </p>
             </div>
             <div ng-if="card.cardtype=='SUMMONERSPELL'" id="spell-preview">
-                <p>{{  card.type }}</p>
+                <p>{{ card.type }}</p>
             </div>
             <div ng-if="card.cardtype=='PET' || card.cardtype=='NEUTRALMONSTER'" id="monster-preview">
-                <p>HP {{  card.hp }} | AD {{  card.ad }} | AP {{  card.ap }}</p>
+                <p>HP {{ card.hp }} | AD {{ card.ad }} | AP {{ card.ap }}</p>
             </div>
-            <p id="card-text">{{  card.text }}</p>
+            <div id="card-text"></div>
         </div>
     </div>
 </div>

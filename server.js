@@ -2,6 +2,8 @@ var game = require('./game');
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var fs = require('fs');
+var request = require("request");
 var socketio = require('socket.io');
 
 var parser = require('body-parser');
@@ -31,7 +33,69 @@ server.listen(port, function(){
 var players = [];
 var games = {};
 
+function setNeutral(){
+    var dragons = fs.createReadStream("app/static/decks/Dragons.dek");
+    var elder = fs.createReadStream("app/static/decks/Elder.dek");
+    var baron = fs.createReadStream("app/static/decks/Baron.dek");
 
+    var neutral = {
+        dragons: [],
+        elder: [],
+        baron: []
+    };
+
+    var req = request.post({
+        url:"https://loltcg-home.herokuapp.com/deck/load",
+        method: "POST"
+    }, function(err,resp,body){
+        if(err){
+            console.log("Error",err);
+        }else{
+            neutral.dragons = JSON.parse(body).data;
+        }
+    });
+    var form = req.form();
+    form.append('file',dragons);
+    form.append('verbose', 'true');
+
+    var req = request.post({
+        url:"https://loltcg-home.herokuapp.com/deck/load",
+        method: "POST"
+    }, function(err,resp,body){
+        if(err){
+            console.log("Error",err);
+        }else{
+            neutral.elder = JSON.parse(body).data;
+        }
+    });
+    var form = req.form();
+    form.append('file',elder);
+    form.append('verbose', 'true');
+
+    var req = request.post({
+        url:"https://loltcg-home.herokuapp.com/deck/load",
+        method: "POST"
+    }, function(err,resp,body){
+        if(err){
+            console.log("Error",err);
+        }else{
+            neutral.baron = JSON.parse(body).data;
+        }
+    });
+    var form = req.form();
+    form.append('file',baron);
+    form.append('verbose', 'true');
+
+    console.log(neutral);
+
+    return neutral;
+}
+
+var neutral = setNeutral();
+
+setTimeout(function(){
+    neutral = setNeutral();
+}, 86400000);
 
 io.on('connection',function(socket){
     socket.on('newplayer', function(data){
@@ -47,9 +111,9 @@ io.on('connection',function(socket){
             let coinflip = Math.floor(Math.random() * 2);
             let state;
             if (coinflip === 0) {
-                state = new game.Game(players[0], players[1]);
+                state = new game.Game(players[0], players[1], neutral);
             } else {
-                state = new game.Game(players[1], players[0]);
+                state = new game.Game(players[1], players[0], neutral);
             }
             state.start();
             games[state.id] = state;

@@ -3,17 +3,17 @@
 		<game>loltcg</game>
 	</meta>
 	<superzone name="Deck">
-		<card><name id="3999">Cloud Drake</name><set>Alpha</set></card>
-		<card><name id="3999">Cloud Drake</name><set>Alpha</set></card>
-		<card><name id="3999">Cloud Drake</name><set>Alpha</set></card>
-		<card><name id="5560">Infernal Drake</name><set>Alpha</set></card>
-		<card><name id="5560">Infernal Drake</name><set>Alpha</set></card>
-		<card><name id="5560">Infernal Drake</name><set>Alpha</set></card>
-		<card><name id="6969">Mountain Drake</name><set>Alpha</set></card>
-		<card><name id="6969">Mountain Drake</name><set>Alpha</set></card>
-		<card><name id="6969">Mountain Drake</name><set>Alpha</set></card>
-		<card><name id="8801">Ocean Drake</name><set>Alpha</set></card>
-		<card><name id="8801">Ocean Drake</name><set>Alpha</set></card>
-		<card><name id="8801">Ocean Drake</name><set>Alpha</set></card>
+		<card><name id="3999" type="NEUTRALMONSTER">Cloud Drake</name><set>Alpha</set></card>
+		<card><name id="3999" type="NEUTRALMONSTER">Cloud Drake</name><set>Alpha</set></card>
+		<card><name id="3999" type="NEUTRALMONSTER">Cloud Drake</name><set>Alpha</set></card>
+		<card><name id="5560" type="NEUTRALMONSTER">Infernal Drake</name><set>Alpha</set></card>
+		<card><name id="5560" type="NEUTRALMONSTER">Infernal Drake</name><set>Alpha</set></card>
+		<card><name id="5560" type="NEUTRALMONSTER">Infernal Drake</name><set>Alpha</set></card>
+		<card><name id="6969" type="NEUTRALMONSTER">Mountain Drake</name><set>Alpha</set></card>
+		<card><name id="6969" type="NEUTRALMONSTER">Mountain Drake</name><set>Alpha</set></card>
+		<card><name id="6969" type="NEUTRALMONSTER">Mountain Drake</name><set>Alpha</set></card>
+		<card><name id="8801" type="NEUTRALMONSTER">Ocean Drake</name><set>Alpha</set></card>
+		<card><name id="8801" type="NEUTRALMONSTER">Ocean Drake</name><set>Alpha</set></card>
+		<card><name id="8801" type="NEUTRALMONSTER">Ocean Drake</name><set>Alpha</set></card>
 	</superzone>
 </deck>

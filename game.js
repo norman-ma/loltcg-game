@@ -1124,187 +1124,13 @@ class Player{
 
         return out;
     }
-
 }
 
 class Neutral{
-    constructor(){
-        this.dragons = new Deck([
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 3999,
-			"img": "/static/cards/3999.jpg",
-			"name": "Cloud Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it two times. \nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions gain 1 Reposition range. (This effect can stack with other “Cloud Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 3999,
-			"img": "/static/cards/3999.jpg",
-			"name": "Cloud Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it two times. \nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions gain 1 Reposition range. (This effect can stack with other “Cloud Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 3999,
-			"img": "/static/cards/3999.jpg",
-			"name": "Cloud Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it two times. \nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions gain 1 Reposition range. (This effect can stack with other “Cloud Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 5560,
-			"img": "/static/cards/5560.jpg",
-			"name": "Infernal Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. When this card attacks a card, deal 2 damage to any card behind that card.\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions gain 1 AD and AP (this effect can stack with other “Infernal Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 5560,
-			"img": "/static/cards/5560.jpg",
-			"name": "Infernal Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. When this card attacks a card, deal 2 damage to any card behind that card.\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions gain 1 AD and AP (this effect can stack with other “Infernal Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 5560,
-			"img": "/static/cards/5560.jpg",
-			"name": "Infernal Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. When this card attacks a card, deal 2 damage to any card behind that card.\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions gain 1 AD and AP (this effect can stack with other “Infernal Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 1,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 6969,
-			"img": "/static/cards/6969.jpg",
-			"name": "Mountain Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. This card has +1 Resistance.\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions deal 1 bonus damage to Structures and Nuetral monsters. (this effect can stack with other “Mountan Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 1,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 6969,
-			"img": "/static/cards/6969.jpg",
-			"name": "Mountain Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. This card has +1 Resistance.\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions deal 1 bonus damage to Structures and Nuetral monsters. (this effect can stack with other “Mountan Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 1,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 6969,
-			"img": "/static/cards/6969.jpg",
-			"name": "Mountain Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. This card has +1 Resistance.\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, Allied Champions deal 1 bonus damage to Structures and Nuetral monsters. (this effect can stack with other “Mountan Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 8801,
-			"img": "/static/cards/8801.jpg",
-			"name": "Ocean Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. When this card attacks a card, Slow the target for 1 Phase\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, At the end of each Phase Heal all allied cards for 1 HP (This effect can stack with other “Ocean Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 8801,
-			"img": "/static/cards/8801.jpg",
-			"name": "Ocean Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. When this card attacks a card, Slow the target for 1 Phase\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, At the end of each Phase Heal all allied cards for 1 HP (This effect can stack with other “Ocean Drake” kills).",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 15,
-			"id": 8801,
-			"img": "/static/cards/8801.jpg",
-			"name": "Ocean Drake",
-			"text": "This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. When this card attacks a card, Slow the target for 1 Phase\nDragon Slayer\nGain 1 Dragon Slayer Stack and for the rest of the duel, At the end of each Phase Heal all allied cards for 1 HP (This effect can stack with other “Ocean Drake” kills).",
-			"type": "DRAGON"
-		}
-	],this);
-        this.elder = new Deck([
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 20,
-			"id": 7992,
-			"img": "/static/cards/7992.jpg",
-			"name": "Elder Drake",
-			"text": "“Elder Drake” is spawned in a Neutral Objective Zone on Turn 10 or after the Slaying of a “Drake” card in the Zone at Turn 10 and every 4 turns after it is slain. This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. This card deals 1 Bonus Damage for every 2 Dragon Slayer stacks of the card attacked and takes 1 reduced damage of every 2 Dragon Slayer stacks of the  card which attacks it.\nAspect of the Dragon\nFor 2 Turns: Allied Champions on the field when this card is slain gain double the effect of each Dragon Slayer stack and if they damage an enemy Champion, until the end of the turn; Deal 1 Damage to that Champion at the end of each Phase.",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 20,
-			"id": 7992,
-			"img": "/static/cards/7992.jpg",
-			"name": "Elder Drake",
-			"text": "“Elder Drake” is spawned in a Neutral Objective Zone on Turn 10 or after the Slaying of a “Drake” card in the Zone at Turn 10 and every 4 turns after it is slain. This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. This card deals 1 Bonus Damage for every 2 Dragon Slayer stacks of the card attacked and takes 1 reduced damage of every 2 Dragon Slayer stacks of the  card which attacks it.\nAspect of the Dragon\nFor 2 Turns: Allied Champions on the field when this card is slain gain double the effect of each Dragon Slayer stack and if they damage an enemy Champion, until the end of the turn; Deal 1 Damage to that Champion at the end of each Phase.",
-			"type": "DRAGON"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 20,
-			"id": 7992,
-			"img": "/static/cards/7992.jpg",
-			"name": "Elder Drake",
-			"text": "“Elder Drake” is spawned in a Neutral Objective Zone on Turn 10 or after the Slaying of a “Drake” card in the Zone at Turn 10 and every 4 turns after it is slain. This card is immune to all forms of crowd control and If it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; this card attacks the last card that damaged it. This card deals 1 Bonus Damage for every 2 Dragon Slayer stacks of the card attacked and takes 1 reduced damage of every 2 Dragon Slayer stacks of the  card which attacks it.\nAspect of the Dragon\nFor 2 Turns: Allied Champions on the field when this card is slain gain double the effect of each Dragon Slayer stack and if they damage an enemy Champion, until the end of the turn; Deal 1 Damage to that Champion at the end of each Phase.",
-			"type": "DRAGON"
-		}
-	],this);
-        this.baron = new Deck([
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 20,
-			"id": 9728,
-			"img": "/static/cards/9728.jpg",
-			"name": "Rift Herald",
-			"text": "“Rift Herald” is immune to all forms of crowd control and if it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; “Rift Herald” attacks the last card that damaged it. Once per turn, when a you or a Champion you control damages this card: Flip a Coin and if the result is Heads: this card takes 6 damage, but it’s next attack deals 2 bonus damage.\nEye of the Herald\nWhen a player slays this card: add this card to their hand. THis card may be summoned as a Pet with 10 HP within 3 turns of slaying this card and this card’s first attack on a structure deals damage equal to half this card’s HP - 2 (min 2).",
-			"type": "RIFTHERALD"
-		},
-		{
-			"ad": 2,
-			"cardtype": "NEUTRALMONSTER",
-			"hp": 25,
-			"id": 3302,
-			"img": "/static/cards/3302.jpg",
-			"name": "Baron Nashor",
-			"text": "If “Rift Herald” is still in the Neutral Objective Zone when this card is spawned: Destroy it. “Baron Nashor” is immune to all forms of crowd control and if it has not been attacked for 1 Turn it will go back to full HP. At the beginning and end of each turn; “Baron Nashor” attacks the last card that damaged it. When “Baron Nashor” attacks a card, deal 1 damage to all cards beside that Champion.\nHand of Baron\nFor 3 turns; Increase allied Champions AD and AP by 2 and allied cards deal 1 bonus damage to Structures.",
-			"type": "BARONNASHOR"
-		}
-	],this);
+    constructor(n){
+        this.dragons = new Deck(n.dragons);
+        this.elder = new Deck(n.elder);
+        this.baron = new Deck(n.baron);
         this.banished = new Deck([]);
         this.field = new NeutralField();
     }
@@ -1417,13 +1243,13 @@ function guid() {
 
 
 class Game{
-    constructor(p1,p2){
+    constructor(p1,p2, n){
 
         this.id = guid();
 
         this.player1 = new Player(p1.id,p1.name,p1.cards);
         this.player2 = new Player(p2.id,p2.name,p2.cards);
-        this.neutral = new Neutral();
+        this.neutral = new Neutral(n);
         this.turn = 1;
         this.turnPlayer = this.player1;
         this.phase = 0;

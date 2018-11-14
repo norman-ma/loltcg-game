@@ -1,8 +1,0 @@
-<deck version="0.1">
-	<meta>
-		<game>loltcg</game>
-	</meta>
-	<superzone name="Deck">
-		<card><name id="7992">Elder Drake</name><set>Alpha</set></card>
-	</superzone>
-</deck>

@@ -129,7 +129,6 @@ option{
     position: absolute;
     width: 18vw;
     font-size: 0;
-    white-space: pre-line;
     background: #0a182770;
     padding: 5px;
     border-radius: 10px;
@@ -265,4 +264,30 @@ option{
 h5{
     font-family: "Beaufort Bold";
     font-size: 1.2em;
+}
+
+
+#card-text h3{
+    margin: 0;
+    font-family: "Beaufort Bold";
+}
+
+#card-text p{
+    margin: 0;
+}
+
+b{
+    font-family: "Beaufort Bold";
+    font-weight: normal;
+}
+
+#card-text li{
+    margin-left: -20px;
+    margin-top: 3px;
+}
+
+.ult{
+    display: inline-block;
+    border-bottom: solid 2px;
+    padding-bottom: 3px;
 }
